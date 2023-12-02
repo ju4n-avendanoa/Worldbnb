@@ -1,6 +1,6 @@
 "use client";
 
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSchema } from "@/validations/userSchema";
 import Link from "next/link";
@@ -16,38 +16,38 @@ function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<Inputs>({
     resolver: zodResolver(SignUpSchema),
   });
 
   const onSubmit = async (data: Inputs) => {
-    // const response = await fetch("/api/register", {
-    //   method: "POST",
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // const responseData = await response.json();
-    console.log(data);
-    reset();
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) return;
+      const responseData = await response.json();
+      console.log(responseData);
+      reset();
+    } catch (error: any) {}
   };
 
   return (
     <div className="flex justify-center">
-      <div className="w-2/3 lg:w-1/3">
+      <div className="w-2/3 lg:w-1/3 border shadow-2xl p-4">
         <h1 className="text-2xl text-center font-bold my-4">Register</h1>
-        <form
-          className="flex flex-col gap-2"
-          onSubmit={handleSubmit((e) => {})}
-        >
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
-            placeholder="your@email.com"
+            placeholder="your name"
             className="border border-black rounded-md p-2"
             {...register("name")}
           />
@@ -89,7 +89,10 @@ function Register() {
               {errors.confirmPassword?.message}
             </p>
           )}
-          <button className="border rounded-md bg-blue-400 p-2 hover:bg-blue-300">
+          <button
+            className="border rounded-md bg-blue-400 p-2 hover:bg-blue-300"
+            disabled={isSubmitting}
+          >
             Login
           </button>
         </form>
