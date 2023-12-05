@@ -18,9 +18,8 @@ export async function POST(request: Request) {
       userId === "" ||
       token === ""
     ) {
-      console.log("Token and userId are required in the request body");
       return NextResponse.json(
-        { error: "Token and userId are required in the request body" },
+        { error: "Token and userId are required" },
         { status: 400 }
       );
     }
@@ -33,7 +32,6 @@ export async function POST(request: Request) {
     });
 
     if (!verificationToken) {
-      console.log("Invalid token or userId");
       return NextResponse.json(
         { error: "Invalid token or userId" },
         { status: 401 }
