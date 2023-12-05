@@ -32,9 +32,9 @@ function Register() {
         },
       });
       if (!response.ok) return;
-      const responseData = await response.json();
-      console.log(responseData);
+      const user = await response.json();
       reset();
+      return user;
     } catch (error: any) {}
   };
 
@@ -97,9 +97,9 @@ function Register() {
           </button>
         </form>
         <p className="text-sm lg:text-base text-center p-2">
-          Don&apos;t have an account yet?{" "}
+          Do you have an account?
           <Link href={"/register"} className="text-blue-400 ml-2">
-            Sign up here
+            Login here
           </Link>
         </p>
       </div>

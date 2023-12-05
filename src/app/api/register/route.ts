@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { Resend } from "resend";
 import { EmailTemplate } from "../../../components/EmailTemplate";
-import hashPassword from "@/app/utils/hashPassword";
-import React from "react";
+import hashPassword from "@/utils/hashPassword";
 
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -42,7 +41,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const emailData = await resend.emails.send({
+    await resend.emails.send({
       from: "Worldbnb <worldbnb@resend.dev>",
       to: newUser.email,
       subject: "Activate account",
@@ -52,7 +51,7 @@ export async function POST(request: Request) {
       }) as React.ReactElement,
     });
 
-    return NextResponse.json(emailData);
+    return NextResponse.json(newUser);
   } catch (error: any) {
     return NextResponse.json({ error: error.message });
   }
