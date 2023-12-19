@@ -1,10 +1,39 @@
-import { EmailTemplate } from "@/components/EmailTemplate";
 import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 
 const prisma = new PrismaClient();
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get("email");
+
+    if (!email) {
+      return NextResponse.json({ error: "Invalid email" }, { status: 401 });
+    }
+
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: "No User Found" }, { status: 401 });
+    }
+
+    const tokenInfo = await prisma.verificationToken.findFirst({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    return NextResponse.json(tokenInfo);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -42,8 +71,6 @@ export async function POST(request: Request) {
       new Date(Date.now()) > verificationToken.expire &&
       userId === verificationToken.userId
     ) {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-
       const user = await prisma.user.findFirst({
         where: {
           id: verificationToken.userId,
@@ -61,16 +88,6 @@ export async function POST(request: Request) {
           activatedAt: new Date(Date.now()),
           expire: new Date(Date.now() + 86400000),
         },
-      });
-
-      await resend.emails.send({
-        from: "Worldbnb <worldbnb@resend.dev>",
-        to: user?.email as string,
-        subject: "Activate account",
-        react: EmailTemplate({
-          token: createToken.token,
-          userId: createToken.userId,
-        }) as React.ReactElement,
       });
 
       return NextResponse.json({ message: "Token resent successfully" });

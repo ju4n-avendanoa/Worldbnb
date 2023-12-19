@@ -4,10 +4,10 @@ import Link from "next/link";
 
 function NavBar() {
   return (
-    <nav className="flex justify-between items-center p-4">
+    <nav className="flex items-center justify-between p-4">
       <Logo />
 
-      <div className="flex items-center border border-black rounded-full py-2 px-4 gap-2 shadow-lg">
+      <div className="flex items-center gap-2 px-4 py-2 border border-black rounded-full shadow-lg">
         <a href="">
           <Bars3Icon className="w-6 h-6" />
         </a>

@@ -10,7 +10,7 @@ async function VerifyingCard({ token, userId }: Props) {
   const message = await tokenInfo(token, userId);
   return (
     <div>
-      <p className="text-center p-4">
+      <p className="p-4 text-center">
         {message.error ? message.error : message.message}
       </p>
     </div>

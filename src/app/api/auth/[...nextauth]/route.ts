@@ -30,8 +30,6 @@ const authOptions: AuthOptions = {
 
         if (!user.emailVerified) return null;
 
-        if (!user.password) return null;
-
         const passOk = await bcrypt.compare(
           credentials!.password,
           user.password
@@ -43,6 +41,21 @@ const authOptions: AuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token }) {
+      console.log(token);
+      return token;
+    },
+    // async session({ session, token }) {
+    //   session.user.id = token.sub;
+    //   return session;
+    // },
+  },
+  secret: process.env.NEXTAUTH_SECRET as string,
+  session: {
+    strategy: "jwt",
+  },
+  debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);
