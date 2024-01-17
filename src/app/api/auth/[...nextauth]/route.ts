@@ -1,14 +1,24 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-const authOptions: AuthOptions = {
+const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -20,43 +30,47 @@ const authOptions: AuthOptions = {
         },
       },
       async authorize(credentials) {
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials?.email,
-          },
-        });
+        try {
+          if (!credentials) return null;
+          const user = await prisma.user.findFirst({
+            where: {
+              email: credentials.email,
+            },
+          });
+          if (!user) throw new Error("User credentials are invalid");
 
-        if (!user) return null;
+          const passOk = await bcrypt.compare(
+            credentials.password,
+            user.password!
+          );
 
-        if (!user.emailVerified) return null;
+          if (!passOk) {
+            throw new Error("User credentials are invalid");
+          }
 
-        const passOk = await bcrypt.compare(
-          credentials!.password,
-          user.password
-        );
-
-        if (!passOk) return null;
-
-        return user;
+          return user;
+        } catch (error: any) {
+          throw new Error(error.message);
+        }
       },
     }),
   ],
   callbacks: {
     async jwt({ token }) {
-      console.log(token);
       return token;
     },
-    // async session({ session, token }) {
-    //   session.user.id = token.sub;
-    //   return session;
-    // },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.sub;
+      }
+      return session;
+    },
   },
   secret: process.env.NEXTAUTH_SECRET as string,
   session: {
     strategy: "jwt",
   },
   debug: process.env.NODE_ENV === "development",
-};
+});
 
-const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

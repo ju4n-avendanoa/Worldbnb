@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.label-style {
+  @apply absolute transition duration-200 top-4 left-4 peer-valid:transition peer-focus:-translate-y-7 peer-focus:bg-white peer-focus:text-sm peer-focus:px-1.5 peer-valid:-translate-y-7 peer-valid:-translate-x-2 peer-focus:-translate-x-2 peer-valid:bg-white peer-valid:px-1.5 peer-valid:text-sm;
+}

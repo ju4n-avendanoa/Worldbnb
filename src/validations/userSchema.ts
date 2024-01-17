@@ -9,10 +9,21 @@ export const SignUpSchema = z
     email: z.string().email({ message: "please enter a valid email" }),
     password: z
       .string()
-      .min(4, { message: "must be at least 8 characters long" }),
+      .min(8, { message: "must be at least 8 characters long" }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "password must match",
     path: ["confirmPassword"],
   });
+
+export const LoginSchema = z.object({
+  email: z.string().email({ message: "please enter a valid email" }),
+  password: z
+    .string()
+    .min(8, { message: "must be at least 8 characters long" }),
+});
+
+export const verificationEmail = z.object({
+  email: z.string().email({ message: "please enter a valid email" }),
+});

@@ -11,6 +11,6 @@ export interface dbUser {
   name: string;
   email: string;
   password: string;
-  emailVerified: Boolean;
+  emailVerified: boolean;
   image: string;
 }
