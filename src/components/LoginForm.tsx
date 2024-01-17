@@ -62,6 +62,7 @@ function LoginForm() {
               <input
                 type="text"
                 id="email"
+                autoFocus
                 className={`${
                   errors.email
                     ? "border border-red-600 outline-red-600 text-red-600"
