@@ -1,0 +1,14 @@
+model Places {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  owner           String @db.ObjectId
+  title           String
+  address         String
+  photos          String[]
+  description     String
+  perks           String[]
+  extraInfo       String
+  checkIn         BigInt
+  checkOut        BigInt
+  maxGuests       BigInt
+  user            User @relation(fields: [owner], references: [id], onDelete: Cascade)
+}

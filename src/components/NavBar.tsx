@@ -11,7 +11,7 @@ function NavBar() {
   const [details, setDetails] = useState(false);
 
   return (
-    <nav className="flex items-center justify-between p-4">
+    <nav className="sticky top-0 flex items-center justify-between p-4 bg-white border">
       <Logo />
       <div
         className="relative px-4 py-2 border border-gray-300 rounded-full"
@@ -25,7 +25,7 @@ function NavBar() {
         ) : (
           <div className="flex gap-4 cursor-pointer">
             <Bars3Icon className="w-6 h-6" />
-            <UserCircleIcon className="w-6 h-6  fill-[#60A5FA]" />
+            <UserCircleIcon className="w-6 h-6  fill-[#2D7FCC]" />
           </div>
         )}
         {details ? <UserMenu /> : null}

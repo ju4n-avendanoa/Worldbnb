@@ -1,7 +1,7 @@
 import React from "react";
 
 function UserHomePage() {
-  return <div>UserHomePage</div>;
+  return <main className="min-h-screen"></main>;
 }
 
 export default UserHomePage;

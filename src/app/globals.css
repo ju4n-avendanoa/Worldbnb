@@ -5,3 +5,35 @@
 .label-style {
   @apply absolute transition duration-200 top-4 left-4 peer-valid:transition peer-focus:-translate-y-7 peer-focus:bg-white peer-focus:text-sm peer-focus:px-1.5 peer-valid:-translate-y-7 peer-valid:-translate-x-2 peer-focus:-translate-x-2 peer-valid:bg-white peer-valid:px-1.5 peer-valid:text-sm;
 }
+
+.loader-parent {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff; /* blanco */
+}
+
+.loader-container {
+  text-align: center;
+  font-size: larger;
+  color: #3498db; /* sky-600 */
+}
+
+.loader {
+  border: 8px solid #3498db; /* sky-600 */
+  border-top: 8px solid #2980b9; /* sky-700 */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

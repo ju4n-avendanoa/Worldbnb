@@ -58,7 +58,7 @@ function RegisterForm() {
   };
 
   return (
-    <div className="flex justify-center py-8">
+    <div className="flex justify-center p-8 py-8">
       <div className="w-full p-4 border shadow-2xl lg:w-1/4">
         <h1 className="my-4 text-2xl font-bold text-center">
           Create your account
@@ -177,7 +177,7 @@ function RegisterForm() {
           </div>
           <button
             type="submit"
-            className="p-3 text-sm text-white border rounded-md bg-sky-600 hover:bg-sky-700"
+            className="p-3 text-base text-white border rounded-md bg-sky-600 hover:bg-sky-700"
             disabled={isSubmitting}
           >
             Sign up

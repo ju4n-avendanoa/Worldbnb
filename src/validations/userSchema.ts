@@ -23,7 +23,3 @@ export const LoginSchema = z.object({
     .string()
     .min(8, { message: "must be at least 8 characters long" }),
 });
-
-export const verificationEmail = z.object({
-  email: z.string().email({ message: "please enter a valid email" }),
-});

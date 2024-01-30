@@ -43,6 +43,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  places        Places[] 
 }
 
 model VerificationToken {
@@ -51,4 +52,32 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Places {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String @db.ObjectId
+  title           String
+  address         String
+  photos          String[]
+  description     String
+  extraInfo       String
+  checkIn         Int
+  checkOut        Int
+  maxGuests       Int
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  perks           Perks[]
+}
+
+model Perks {
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  placeId          String @unique @db.ObjectId
+  wifi             Boolean
+  pet              Boolean
+  parking          Boolean
+  tv               Boolean
+  privateEntrance  Boolean
+  kitchen          Boolean
+  washer           Boolean
+  places           Places @relation(fields: [placeId], references: [id], onDelete: Cascade)
 }
