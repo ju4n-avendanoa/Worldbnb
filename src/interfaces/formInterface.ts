@@ -6,6 +6,7 @@ export type FormInputs = {
   checkIn: number;
   checkOut: number;
   maxGuests: number;
+  photos: File[];
   perks: Perk;
 };
 

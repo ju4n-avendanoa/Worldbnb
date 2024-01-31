@@ -72,6 +72,11 @@ export async function PATCH(
         privateEntrance: perks.privateEntrance,
         kitchen: perks.kitchen,
         washer: perks.washer,
+        pool: perks.pool,
+        airConditioner: perks.airConditioner,
+        breakfast: perks.breakfast,
+        gym: perks.gym,
+        cleaningService: perks.cleaningService,
       },
     });
 

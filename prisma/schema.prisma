@@ -79,5 +79,10 @@ model Perks {
   privateEntrance  Boolean
   kitchen          Boolean
   washer           Boolean
+  pool             Boolean
+  airConditioner   Boolean
+  breakfast        Boolean
+  gym              Boolean
+  cleaningService  Boolean
   places           Places @relation(fields: [placeId], references: [id], onDelete: Cascade)
 }

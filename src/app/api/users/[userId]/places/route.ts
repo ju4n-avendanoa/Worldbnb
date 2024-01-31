@@ -1,3 +1,4 @@
+import { Place } from "@/interfaces/placeinterface";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -14,7 +15,7 @@ export async function GET(
     },
   });
 
-  const idPlaces = places.map((place) => place.id);
+  const idPlaces = places.map((place: Place) => place.id);
 
   const perks = await prisma.perks.findMany({
     where: {
@@ -41,7 +42,7 @@ export async function POST(
     photos,
     perks,
   } = await request.json();
-
+  console.log(photos);
   const newPlace = await prisma.places.create({
     data: {
       userId: params.userId,
@@ -66,6 +67,11 @@ export async function POST(
       privateEntrance: perks.privateEntrance,
       kitchen: perks.kitchen,
       washer: perks.washer,
+      pool: perks.pool,
+      airConditioner: perks.airConditioner,
+      breakfast: perks.breakfast,
+      gym: perks.gym,
+      cleaningService: perks.cleaningService,
     },
   });
 

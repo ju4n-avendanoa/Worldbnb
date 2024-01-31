@@ -58,8 +58,6 @@ function PlaceForm({
   }, [placeId]);
 
   const onSubmit = async (data: FormInputs) => {
-    setError(false);
-
     if (placeId) {
       const response = await fetch(`/api/places/${placeId}`, {
         method: "PATCH",
@@ -78,13 +76,35 @@ function PlaceForm({
       return;
     }
 
+    const formData = new FormData();
+
+    for (let i = 0; i < data.photos.length; i++) {
+      formData.append("photos", data.photos[i]);
+    }
+
+    const photosResponse = await fetch("/api/photos", {
+      body: formData,
+      method: "POST",
+    });
+
+    if (!photosResponse.ok) {
+      setError(true);
+      return;
+    }
+
+    const urlResponse = await photosResponse.json();
+    console.log(urlResponse);
+    const photosUrl = urlResponse.map((url: any) => url.secure_url);
+    console.log(photosUrl);
+
     const response = await fetch(`/api/users/${userId}/places`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, photos: photosUrl }),
       headers: {
         "Content-Type": "application/json",
       },
     });
+    alert("success");
     if (!response.ok) {
       setError(true);
       setErrorMessage("There was a problem, please try again later");
@@ -165,7 +185,7 @@ function PlaceForm({
             </section>
             <section className="w-full px-10">
               <Perks register={register} watch={watch} />
-              <UploadImages />
+              <UploadImages register={register} errors={errors} />
               <Input
                 label="Max guests"
                 description="Indicate the maximum number of guests your property can

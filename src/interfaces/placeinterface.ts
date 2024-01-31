@@ -8,6 +8,11 @@ export interface Perks {
   privateEntrance: boolean;
   kitchen: boolean;
   washer: boolean;
+  pool: boolean;
+  airConditioner: boolean;
+  breakfast: boolean;
+  gym: boolean;
+  cleaningService: boolean;
 }
 
 export interface Place {

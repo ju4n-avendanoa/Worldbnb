@@ -4,6 +4,8 @@ import { Perks, Place } from "@/interfaces/placeinterface";
 import getPlaces from "@/utils/getPlaces";
 import React from "react";
 
+export const revalidate = 0;
+
 async function MyPlaces({ params }: { params: { userId: string } }) {
   const {
     places,

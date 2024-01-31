@@ -1,13 +1,17 @@
 import { perksLogos } from "@/utils/perksLogos";
 import ImageWithFallback from "./ImageWithFallback";
 import { useState } from "react";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FormInputs } from "@/interfaces/formInterface";
 
-function UploadImages() {
-  const [selectedFiles, setSelectedFiles] = useState([]);
+type Props = {
+  errors: FieldErrors<FormInputs>;
+  register: UseFormRegister<FormInputs>;
+};
 
-  const handleFileChange = (event: any) => {
-    const files = event.target.files;
-    setSelectedFiles(files);
+function UploadImages({ register, errors }: Props) {
+  const onSubmit = (data: any) => {
+    console.log(data);
   };
 
   return (
@@ -20,7 +24,7 @@ function UploadImages() {
               "https://res.cloudinary.com/dhjqarghy/image/upload/v1706112761/Airbnb/cloud-arrow-up-svgrepo-com_efugzf.svg"
             }
             fallbackSrc={perksLogos.default.link}
-            alt={"upload"}
+            alt="upload"
             height={40}
             width={40}
           />
@@ -30,20 +34,11 @@ function UploadImages() {
       <input
         type="file"
         id="upload"
-        className=""
         multiple
-        onChange={handleFileChange}
+        required
+        className=""
+        {...register("photos")}
       />
-      {selectedFiles.length > 0 && (
-        <div>
-          <p>Archivos seleccionados:</p>
-          <ul>
-            {Array.from(selectedFiles).map((file, index) => (
-              <li key={index}>{file.name}</li>
-            ))}
-          </ul>
-        </div>
-      )}
     </>
   );
 }

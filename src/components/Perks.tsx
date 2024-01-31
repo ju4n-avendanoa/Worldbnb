@@ -91,11 +91,12 @@ function Perks({
       <p className="text-gray-500">Select all the perks of your place</p>
       <div className="grid h-auto grid-cols-2 gap-2 py-2 md:grid-cols-3 xl:grid-cols-4">
         {perksData.map(({ id, label, key, logo }) => (
-          <div
+          <label
             key={id}
-            className={`${
-              watch(key as keyof FormInputs) ? "bg-sky-100" : null
-            } flex items-center justify-around gap-2 p-4 border-2 rounded-lg border-sky-700 hover:bg-sky-100`}
+            htmlFor={id}
+            className={`
+            ${watch(key as keyof FormInputs) ? "bg-sky-100" : null} 
+            grid grid-cols-2 place-items-center gap-1 py-1 px-3 text-xs font-semibold text-center border-2 rounded-lg select-none text-sky-600 border-sky-700 hover:bg-sky-100`}
           >
             <input
               type="checkbox"
@@ -103,11 +104,7 @@ function Perks({
               className="w-5 h-5"
               {...register(key as keyof FormInputs)}
             />
-            <label
-              key={id}
-              htmlFor={id}
-              className="flex flex-col items-center gap-2 text-xs font-semibold text-center select-none text-sky-600"
-            >
+            <div className="flex flex-col items-center justify-center gap-2">
               {label}
               <ImageWithFallback
                 src={logo}
@@ -116,8 +113,8 @@ function Perks({
                 height={40}
                 width={40}
               />
-            </label>
-          </div>
+            </div>
+          </label>
         ))}
       </div>
     </div>
