@@ -24,3 +24,8 @@ export type Perk = {
   gym: boolean;
   cleaningService: boolean;
 };
+
+export type Files = {
+  selectedFiles: File[];
+  setSelectedFiles: (files: File[]) => void;
+};

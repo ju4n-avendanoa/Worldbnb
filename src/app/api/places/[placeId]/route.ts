@@ -1,8 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { omit } from "lodash";
+import { Photos } from "@/interfaces/placeinterface";
+import { v2 as cloudinary } from "cloudinary";
 
 const prisma = new PrismaClient();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 export async function GET(
   request: Request,
@@ -22,10 +30,20 @@ export async function GET(
         placeId: place.id,
       },
     });
+
+    const photos = await prisma.photos.findMany({
+      where: {
+        placeId: place.id,
+      },
+    });
+
+    const filteredPhotos = photos.map((photo: Photos) =>
+      omit(photo, ["placeId"])
+    );
+
     const filteredPlace = omit(place, ["id", "userId"]);
     const filteredPerks = omit(perks, ["id", "placeId"]);
-
-    return NextResponse.json({ filteredPlace, filteredPerks });
+    return NextResponse.json({ filteredPlace, filteredPerks, filteredPhotos });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -44,11 +62,10 @@ export async function PATCH(
       checkIn,
       checkOut,
       maxGuests,
-      photos,
       perks,
     } = await request.json();
 
-    const updatedPlace = await prisma.places.update({
+    await prisma.places.update({
       where: { id: params.placeId },
       data: {
         title,
@@ -58,7 +75,6 @@ export async function PATCH(
         checkIn,
         checkOut,
         maxGuests,
-        photos,
       },
     });
 
@@ -83,5 +99,27 @@ export async function PATCH(
     return NextResponse.json("success");
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { placeId: string } }
+) {
+  try {
+    const photos: Photos[] = await request.json();
+    await prisma.places.delete({
+      where: { id: params.placeId },
+    });
+
+    photos.map((photo) =>
+      cloudinary.uploader
+        .destroy(photo.photoId, { invalidate: true })
+        .then((result) => console.log(result))
+    );
+
+    return NextResponse.json("deleted");
+  } catch (error) {
+    return NextResponse.json(error);
   }
 }

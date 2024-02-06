@@ -28,3 +28,9 @@ export interface Place {
   maxGuests: number;
   perks: Perks;
 }
+
+export interface Photos {
+  placeId: string;
+  photoId: string;
+  url: string;
+}

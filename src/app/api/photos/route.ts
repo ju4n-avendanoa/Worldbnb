@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
-import { result } from "lodash";
+import { PrismaClient } from "@prisma/client";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -8,57 +8,24 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-export async function POST(request: Request) {
-  const data = await request.formData();
-  const images = data.getAll("photos");
-  const folderName = "Places_airbnb";
-  if (
-    !images ||
-    images.length === 0 ||
-    !images.every((img) => img instanceof File)
-  ) {
-    return NextResponse.json(
-      { error: "No se proporcionaron archivos de imagen válidos" },
-      { status: 400 }
-    );
-  }
+const prisma = new PrismaClient();
 
-  async function getImageBuffer(image: File): Promise<Buffer> {
-    const arrayBuffer = await image.arrayBuffer();
-    return Buffer.from(arrayBuffer);
-  }
+export async function DELETE(request: Request) {
   try {
-    const uploadPromises = images.map(async (image) => {
-      if (image instanceof File) {
-        const fileBuffer = await getImageBuffer(image);
+    const photoId = await request.json();
 
-        return new Promise((resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              {
-                folder: folderName,
-              },
-              (err, result) => {
-                if (err) reject(err);
-                resolve(result);
-              }
-            )
-            .end(fileBuffer);
-        });
-      } else {
-        throw new Error("No se proporcionó un archivo de imagen válido");
-      }
+    cloudinary.uploader
+      .destroy(photoId, { invalidate: true })
+      .then((result) => console.log(result));
+
+    await prisma.photos.delete({
+      where: {
+        photoId,
+      },
     });
 
-    const results = await Promise.all(uploadPromises);
-
-    console.log(results);
-    return NextResponse.json(results);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Error en el servidor" },
-      { status: 500 }
-    );
+    return NextResponse.json(" ");
+  } catch (error: any) {
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }

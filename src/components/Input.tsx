@@ -53,7 +53,6 @@ function Input({
               ? "border border-red-600 outline-red-600 text-red-600"
               : "focus:outline-sky-600"
           } w-full p-3 border border-gray-300 rounded-md peer`}
-          required
           {...register(name)}
         />
       </label>

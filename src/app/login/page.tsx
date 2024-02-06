@@ -1,8 +1,13 @@
 import LoginForm from "@/components/LoginForm";
-import React from "react";
+import React, { Suspense } from "react";
+import Loading from "../loading";
 
 function page() {
-  return <LoginForm />;
+  return (
+    <Suspense fallback={<Loading />}>
+      <LoginForm />;
+    </Suspense>
+  );
 }
 
 export default page;

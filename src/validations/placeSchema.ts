@@ -1,14 +1,5 @@
 import { z } from "zod";
 
-const FileInfoSchema = z.object({
-  lastModified: z.number(),
-  lastModifiedDate: z.coerce.date(),
-  name: z.string(),
-  size: z.number(),
-  type: z.string(),
-  webkitRelativePath: z.string(),
-});
-const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -43,16 +34,12 @@ export const PlaceSchema = z.object({
     .string()
     .min(5, { message: "must be at least 4 characters long" }),
   perks: Perks,
-  photos: z
-    .any()
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max image size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
-    ),
+  photos: z.any().refine((files) => {
+    if (!files || files.length === 0) {
+      return true;
+    }
+    return ACCEPTED_IMAGE_TYPES.includes(files[0].type);
+  }, "Only .jpg, .jpeg, .png and .webp formats are supported."),
   extraInfo: z
     .string()
     .min(5, { message: "must be at least 4 characters long" }),

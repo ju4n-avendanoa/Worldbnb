@@ -1,5 +1,6 @@
 import PlaceForm from "@/components/PlaceForm";
-import React from "react";
+
+export const revalidate = 0;
 
 function NewPlace({ params }: { params: { placeId: string; userId: string } }) {
   return (

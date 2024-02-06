@@ -3,6 +3,7 @@ import { Inter, Noto_Sans, Lato } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Provider from "@/context/Provider";
+import LoadProvider from "@/context/LoadProvider";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
       <Provider>
         <body className={`${lato.className} min-h-screen`}>
           <NavBar />
-          {children}
+          <LoadProvider>{children}</LoadProvider>
         </body>
       </Provider>
     </html>

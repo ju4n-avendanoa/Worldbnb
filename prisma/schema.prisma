@@ -59,14 +59,23 @@ model Places {
   userId          String @db.ObjectId
   title           String
   address         String
-  photos          String[]
   description     String
   extraInfo       String
   checkIn         Int
   checkOut        Int
   maxGuests       Int
-  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photos          Photos[]
   perks           Perks[]
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+model Photos {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  url            String
+  placeId        String @db.ObjectId
+  photoId        String @unique
+  places         Places @relation(fields: [placeId], references: [id], onDelete: Cascade)
 }
 
 model Perks {

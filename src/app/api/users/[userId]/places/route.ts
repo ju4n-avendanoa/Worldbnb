@@ -8,7 +8,6 @@ export async function GET(
   request: Request,
   { params }: { params: { userId: string } }
 ) {
-  console.log(params.userId);
   const places = await prisma.places.findMany({
     where: {
       userId: params.userId,
@@ -17,6 +16,12 @@ export async function GET(
 
   const idPlaces = places.map((place: Place) => place.id);
 
+  const photos = await prisma.photos.findMany({
+    where: {
+      placeId: { in: idPlaces },
+    },
+  });
+
   const perks = await prisma.perks.findMany({
     where: {
       placeId: {
@@ -24,28 +29,15 @@ export async function GET(
       },
     },
   });
-  return NextResponse.json({ places, perks });
+  return NextResponse.json({ places, perks, photos });
 }
 
 export async function POST(
   request: Request,
   { params }: { params: { userId: string } }
 ) {
-  const {
-    title,
-    address,
-    description,
-    extraInfo,
-    checkIn,
-    checkOut,
-    maxGuests,
-    photos,
-    perks,
-  } = await request.json();
-  console.log(photos);
-  const newPlace = await prisma.places.create({
-    data: {
-      userId: params.userId,
+  try {
+    const {
       title,
       address,
       description,
@@ -54,26 +46,56 @@ export async function POST(
       checkOut,
       maxGuests,
       photos,
-    },
-  });
+      perks,
+    } = await request.json();
 
-  await prisma.perks.create({
-    data: {
-      placeId: newPlace.id,
-      wifi: perks.wifi,
-      pet: perks.pet,
-      parking: perks.parking,
-      tv: perks.tv,
-      privateEntrance: perks.privateEntrance,
-      kitchen: perks.kitchen,
-      washer: perks.washer,
-      pool: perks.pool,
-      airConditioner: perks.airConditioner,
-      breakfast: perks.breakfast,
-      gym: perks.gym,
-      cleaningService: perks.cleaningService,
-    },
-  });
+    const newPlace = await prisma.places.create({
+      data: {
+        userId: params.userId,
+        title,
+        address,
+        description,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuests,
+      },
+    });
 
-  return NextResponse.json("newPlace");
+    for (const photoData of photos) {
+      await prisma.photos.create({
+        data: {
+          photoId: photoData.photoId,
+          url: photoData.url,
+          placeId: newPlace.id,
+        },
+      });
+    }
+
+    await prisma.perks.create({
+      data: {
+        placeId: newPlace.id,
+        wifi: perks.wifi,
+        pet: perks.pet,
+        parking: perks.parking,
+        tv: perks.tv,
+        privateEntrance: perks.privateEntrance,
+        kitchen: perks.kitchen,
+        washer: perks.washer,
+        pool: perks.pool,
+        airConditioner: perks.airConditioner,
+        breakfast: perks.breakfast,
+        gym: perks.gym,
+        cleaningService: perks.cleaningService,
+      },
+    });
+
+    return NextResponse.json("newPlace");
+  } catch (error) {
+    console.error("Error in POST:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }

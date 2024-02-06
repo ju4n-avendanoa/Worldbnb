@@ -38,13 +38,12 @@ const TextAreaInput = ({
           {description}
         </p>
         <textarea
-          required
           id={id}
           className={`${
             errors[name]
               ? "border border-red-600 outline-red-600 text-red-600"
               : "focus:outline-sky-600"
-          } w-full p-3 border border-gray-300 rounded-md peer`}
+          } w-full p-3 border border-gray-300 rounded-md h-40 peer`}
           {...register(name)}
         />
       </label>

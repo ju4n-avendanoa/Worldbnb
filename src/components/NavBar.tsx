@@ -11,7 +11,7 @@ function NavBar() {
   const [details, setDetails] = useState(false);
 
   return (
-    <nav className="sticky top-0 flex items-center justify-between p-4 bg-white border">
+    <nav className="sticky top-0 flex items-center justify-between p-4 bg-white border z-20">
       <Logo />
       <div
         className="relative px-4 py-2 border border-gray-300 rounded-full"

@@ -12,6 +12,8 @@ import UploadImages from "./UploadImages";
 import Loading from "@/app/loading";
 import Input from "./Input";
 import TextAreaInput from "./TextAreaInput";
+import { ImageResponse } from "@/interfaces/cloudinaryResponse";
+import { Photos } from "@/interfaces/placeinterface";
 
 function PlaceForm({
   placeId,
@@ -26,28 +28,34 @@ function PlaceForm({
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
+    getValues,
     reset,
   } = useForm<FormInputs>({
     resolver: zodResolver(PlaceSchema),
   });
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [cloudFilesToShow, setCloudFilesToShow] = useState<Photos[]>([]);
 
   const { error, errorMessage, setError, setErrorMessage } = useErrorStore();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  //fetch the data when editing a place
 
   useEffect(() => {
     if (!placeId) return;
     setLoading(true);
     const fetchPlaceForm = async () => {
       const response = await fetch(
-        `http://localhost:3000/api/places/${placeId}`,
-        { cache: "no-store" }
+        `http://localhost:3000/api/places/${placeId}`
       );
       const data = await response.json();
 
+      setCloudFilesToShow(data.filteredPhotos);
       Object.entries(data.filteredPlace).forEach(([key, value]) =>
         setValue(key as keyof FormInputs, value as string | number)
       );
+
       Object.entries(data.filteredPerks).forEach(([key, value]) =>
         setValue(`perks.${key as keyof Perk}`, value as boolean)
       );
@@ -55,18 +63,59 @@ function PlaceForm({
     };
 
     fetchPlaceForm();
-  }, [placeId]);
+  }, [placeId, setValue]);
+
+  //Submit function to create or edit a place
 
   const onSubmit = async (data: FormInputs) => {
+    let urlResponse: ImageResponse[] = [];
+    let photosUrl: Omit<Photos, "placeId">[] = [];
+    console.log(data);
+    if (data.photos.length > 0) {
+      const formData = new FormData();
+
+      for (let i = 0; i < data.photos.length; i++) {
+        let file = data.photos[i];
+        formData.append("file", file);
+        formData.append("upload_preset", "Places_airbnb");
+
+        const photosResponse = await fetch(
+          `https://api.cloudinary.com/v1_1/dhjqarghy/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        urlResponse.push(await photosResponse.json());
+      }
+      photosUrl = urlResponse.map((image: ImageResponse) => ({
+        photoId: image.public_id,
+        url: image.secure_url,
+      }));
+    }
+
     if (placeId) {
-      const response = await fetch(`/api/places/${placeId}`, {
+      console.log(photosUrl);
+      const placeResponse = await fetch(`/api/places/${placeId}`, {
         method: "PATCH",
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (!response.ok) {
+      if (!placeResponse.ok) {
+        setError(true);
+        setErrorMessage("There was a problem, please try again later");
+        return;
+      }
+      const photosResponse = await fetch(`/api/photos/${placeId}`, {
+        method: "POST",
+        body: JSON.stringify({ photosUrl }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!photosResponse.ok) {
         setError(true);
         setErrorMessage("There was a problem, please try again later");
         return;
@@ -76,27 +125,6 @@ function PlaceForm({
       return;
     }
 
-    const formData = new FormData();
-
-    for (let i = 0; i < data.photos.length; i++) {
-      formData.append("photos", data.photos[i]);
-    }
-
-    const photosResponse = await fetch("/api/photos", {
-      body: formData,
-      method: "POST",
-    });
-
-    if (!photosResponse.ok) {
-      setError(true);
-      return;
-    }
-
-    const urlResponse = await photosResponse.json();
-    console.log(urlResponse);
-    const photosUrl = urlResponse.map((url: any) => url.secure_url);
-    console.log(photosUrl);
-
     const response = await fetch(`/api/users/${userId}/places`, {
       method: "POST",
       body: JSON.stringify({ ...data, photos: photosUrl }),
@@ -104,7 +132,6 @@ function PlaceForm({
         "Content-Type": "application/json",
       },
     });
-    alert("success");
     if (!response.ok) {
       setError(true);
       setErrorMessage("There was a problem, please try again later");
@@ -112,6 +139,7 @@ function PlaceForm({
     }
     reset();
     router.push(`/myAccount/${userId}/places`);
+    return;
   };
 
   return (
@@ -120,9 +148,11 @@ function PlaceForm({
         <Loading />
       ) : (
         <>
-          <h2 className="text-3xl font-bold text-sky-700">Add a new place</h2>
+          <h2 className="text-3xl font-bold text-sky-700">
+            {placeId ? "Edit your place" : "Add a new place"}
+          </h2>
           <form
-            className="grid w-full grid-cols-1 gap-4 p-4 lg:grid-cols-2 place-items-center"
+            className="grid w-full grid-cols-1 gap-4 p-4 lg:grid-cols-2 place-items-start"
             onSubmit={handleSubmit(onSubmit)}
           >
             <section className="w-full px-10">
@@ -185,7 +215,15 @@ function PlaceForm({
             </section>
             <section className="w-full px-10">
               <Perks register={register} watch={watch} />
-              <UploadImages register={register} errors={errors} />
+              <UploadImages
+                register={register}
+                errors={errors}
+                setValue={setValue}
+                selectedFiles={selectedFiles}
+                setSelectedFiles={setSelectedFiles}
+                cloudFilesToShow={cloudFilesToShow}
+                setCloudFilesToShow={setCloudFilesToShow}
+              />
               <Input
                 label="Max guests"
                 description="Indicate the maximum number of guests your property can
