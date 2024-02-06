@@ -27,7 +27,7 @@ async function Places({ userId }: { userId: string }) {
           return (
             <div
               key={place.id}
-              className="relative flex flex-col md:flex-row gap-5 p-4 bg-gray-100 border border-gray-400 rounded-xl h-min w-full lg:text-base text-sm"
+              className="relative flex flex-col w-full gap-5 p-4 text-sm bg-gray-100 border border-gray-400 md:flex-row rounded-xl h-min lg:text-base"
             >
               <PlaceBanner
                 place={place}

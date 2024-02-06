@@ -98,7 +98,10 @@ export async function PATCH(
 
     return NextResponse.json("success");
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -118,8 +121,14 @@ export async function DELETE(
         .then((result) => console.log(result))
     );
 
-    return NextResponse.json("deleted");
-  } catch (error) {
-    return NextResponse.json(error);
+    return NextResponse.json("Place deleted successfuly");
+  } catch (error: any) {
+    console.error(error);
+    return NextResponse.json(
+      {
+        message: "server error, please try again later",
+      },
+      { status: 500 }
+    );
   }
 }

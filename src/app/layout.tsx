@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Provider from "@/context/Provider";
 import LoadProvider from "@/context/LoadProvider";
+import { Toaster } from "sonner";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
 
@@ -21,8 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <Provider>
         <body className={`${lato.className} min-h-screen`}>
-          <NavBar />
-          <LoadProvider>{children}</LoadProvider>
+          <LoadProvider>
+            <NavBar />
+            {children}
+            <Toaster richColors={true} closeButton={true} />
+          </LoadProvider>
         </body>
       </Provider>
     </html>

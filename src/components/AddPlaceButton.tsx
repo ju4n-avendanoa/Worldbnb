@@ -2,7 +2,7 @@
 
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 
 function AddPlaceButton() {
   const { data: session } = useSession();

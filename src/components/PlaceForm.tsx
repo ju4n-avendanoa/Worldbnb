@@ -1,19 +1,19 @@
 "use client";
 
-import { useErrorStore } from "@/store/errorStore";
 import { PlaceSchema } from "@/validations/placeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FormInputs, Perk } from "@/interfaces/formInterface";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
+import { ImageResponse } from "@/interfaces/cloudinaryResponse";
+import { Photos } from "@/interfaces/placeinterface";
+import { toast } from "sonner";
 import Perks from "./Perks";
 import UploadImages from "./UploadImages";
 import Loading from "@/app/loading";
 import Input from "./Input";
 import TextAreaInput from "./TextAreaInput";
-import { ImageResponse } from "@/interfaces/cloudinaryResponse";
-import { Photos } from "@/interfaces/placeinterface";
 
 function PlaceForm({
   placeId,
@@ -36,7 +36,6 @@ function PlaceForm({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [cloudFilesToShow, setCloudFilesToShow] = useState<Photos[]>([]);
 
-  const { error, errorMessage, setError, setErrorMessage } = useErrorStore();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -68,78 +67,82 @@ function PlaceForm({
   //Submit function to create or edit a place
 
   const onSubmit = async (data: FormInputs) => {
-    let urlResponse: ImageResponse[] = [];
-    let photosUrl: Omit<Photos, "placeId">[] = [];
-    console.log(data);
-    if (data.photos.length > 0) {
-      const formData = new FormData();
+    try {
+      let urlResponse: ImageResponse[] = [];
+      let photosUrl: Omit<Photos, "placeId">[] = [];
+      if (data.photos.length > 0) {
+        const formData = new FormData();
 
-      for (let i = 0; i < data.photos.length; i++) {
-        let file = data.photos[i];
-        formData.append("file", file);
-        formData.append("upload_preset", "Places_airbnb");
+        for (let i = 0; i < data.photos.length; i++) {
+          let file = data.photos[i];
+          formData.append("file", file);
+          formData.append("upload_preset", "Places_airbnb");
 
-        const photosResponse = await fetch(
-          `https://api.cloudinary.com/v1_1/dhjqarghy/image/upload`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-        urlResponse.push(await photosResponse.json());
+          const photosResponse = await fetch(
+            `https://api.cloudinary.com/v1_1/dhjqarghy/image/upload`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+          if (!photosResponse.ok) continue;
+          urlResponse.push(await photosResponse.json());
+        }
+        photosUrl = urlResponse.map((image: ImageResponse) => ({
+          photoId: image.public_id,
+          url: image.secure_url,
+        }));
       }
-      photosUrl = urlResponse.map((image: ImageResponse) => ({
-        photoId: image.public_id,
-        url: image.secure_url,
-      }));
-    }
 
-    if (placeId) {
-      console.log(photosUrl);
-      const placeResponse = await fetch(`/api/places/${placeId}`, {
-        method: "PATCH",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!placeResponse.ok) {
-        setError(true);
-        setErrorMessage("There was a problem, please try again later");
+      if (placeId) {
+        const placeResponse = await fetch(`/api/places/${placeId}`, {
+          method: "PATCH",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!placeResponse.ok) {
+          const error = await placeResponse.json();
+          toast.error("There was an error, please try again later");
+          throw new Error(error.error);
+        }
+        const photosResponse = await fetch(`/api/photos/${placeId}`, {
+          method: "POST",
+          body: JSON.stringify({ photosUrl }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!photosResponse.ok) {
+          toast.error("There was an error, please try again later");
+          const error = await photosResponse.json();
+          throw new Error(error.error);
+        }
+        toast.success("Place updated successfully");
+        router.push(`/myAccount/${userId}/places`);
+        reset();
         return;
       }
-      const photosResponse = await fetch(`/api/photos/${placeId}`, {
+
+      const response = await fetch(`/api/users/${userId}/places`, {
         method: "POST",
-        body: JSON.stringify({ photosUrl }),
+        body: JSON.stringify({ ...data, photos: photosUrl }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (!photosResponse.ok) {
-        setError(true);
-        setErrorMessage("There was a problem, please try again later");
-        return;
+      if (!response.ok) {
+        toast.error("There was an error, please try again later");
+        const error = await response.json();
+        throw new Error(error.error);
       }
+      toast.success("Place created successfully");
       router.push(`/myAccount/${userId}/places`);
       reset();
-      return;
+    } catch (error: any) {
+      console.log(error);
     }
-
-    const response = await fetch(`/api/users/${userId}/places`, {
-      method: "POST",
-      body: JSON.stringify({ ...data, photos: photosUrl }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      setError(true);
-      setErrorMessage("There was a problem, please try again later");
-      return;
-    }
-    reset();
-    router.push(`/myAccount/${userId}/places`);
-    return;
   };
 
   return (
