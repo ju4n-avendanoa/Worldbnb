@@ -8,6 +8,9 @@ export type FormInputs = {
   maxGuests: number;
   photos: File[];
   perks: Perk;
+  country: string;
+  currency: string;
+  price: number;
 };
 
 export type Perk = {

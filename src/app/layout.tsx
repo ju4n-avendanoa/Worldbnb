@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans, Lato } from "next/font/google";
-import "./globals.css";
-import NavBar from "@/components/NavBar";
+import { Toaster } from "sonner";
+import NavBar from "@/components/navbar/NavBar";
 import Provider from "@/context/Provider";
 import LoadProvider from "@/context/LoadProvider";
-import { Toaster } from "sonner";
+import "./globals.css";
 
 const lato = Lato({ subsets: ["latin"], weight: "400" });
 

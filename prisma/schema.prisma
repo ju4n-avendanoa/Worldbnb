@@ -61,13 +61,16 @@ model Places {
   address         String
   description     String
   extraInfo       String
+  price           Int
+  country         String
+  currency        String
   checkIn         Int
   checkOut        Int
   maxGuests       Int
   photos          Photos[]
   perks           Perks[]
   user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  
 }
 
 model Photos {

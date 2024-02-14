@@ -8,8 +8,8 @@ import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { perksLogos } from "@/utils/perksLogos";
 import { FormInputs } from "@/interfaces/formInterface";
 import { Photos } from "@/interfaces/placeinterface";
-import ImageWithFallback from "./ImageWithFallback";
-import { deletePhotos } from "@/utils/deletePhotos";
+import ImageWithFallback from "../ImageWithFallback";
+import { deletePhotos } from "@/actions/deletePhotos";
 
 type Props = {
   errors: FieldErrors<FormInputs>;
@@ -37,7 +37,7 @@ function UploadImages({
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  }, [selectedFiles]);
+  }, [selectedFiles, setValue]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -96,7 +96,7 @@ function UploadImages({
           onChange: handleFileChange,
         })}
       />
-      <div className="grid w-full grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 py-4">
+      <div className="grid w-full grid-cols-2 gap-2 py-4 md:grid-cols-3 xl:grid-cols-4">
         {cloudFilesToShow.map((file) => (
           <div
             key={file.photoId}

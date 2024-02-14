@@ -1,7 +1,7 @@
-import AddPlaceButton from "@/components/AddPlaceButton";
-import PlaceBanner from "@/components/PlaceBanner";
+import AddPlaceButton from "@/components/places/AddPlaceButton";
+import PlaceBanner from "@/components/places/PlaceBanner";
 import { Perks, Photos, Place } from "@/interfaces/placeinterface";
-import getPlaces from "@/utils/getPlaces";
+import getPlacesByUserId from "@/actions/getPlacesByUserId";
 import React from "react";
 
 async function Places({ userId }: { userId: string }) {
@@ -13,12 +13,12 @@ async function Places({ userId }: { userId: string }) {
     places: Place[];
     perks: Perks[];
     photos: Photos[];
-  } = await getPlaces(userId);
+  } = await getPlacesByUserId(userId);
 
   return (
     <section className="flex flex-col items-center w-full gap-6 p-6 text-sm md:text-base">
       <AddPlaceButton />
-      {places.length > 0 ? (
+      {places?.length > 0 ? (
         places.map((place) => {
           const placePerks = perks.find((perk) => perk.placeId === place.id);
           const placePhotos = photos.filter(
@@ -27,7 +27,7 @@ async function Places({ userId }: { userId: string }) {
           return (
             <div
               key={place.id}
-              className="relative flex flex-col w-full gap-5 p-4 text-sm bg-gray-100 border border-gray-400 md:flex-row rounded-xl h-min lg:text-base"
+              className="relative flex flex-col w-full gap-5 p-4 my-2 text-sm bg-gray-100 border shadow-lg md:flex-row rounded-xl h-min lg:text-base shadow-gray-700"
             >
               <PlaceBanner
                 place={place}

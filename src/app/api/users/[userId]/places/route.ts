@@ -8,28 +8,36 @@ export async function GET(
   request: Request,
   { params }: { params: { userId: string } }
 ) {
-  const places = await prisma.places.findMany({
-    where: {
-      userId: params.userId,
-    },
-  });
-
-  const idPlaces = places.map((place: Place) => place.id);
-
-  const photos = await prisma.photos.findMany({
-    where: {
-      placeId: { in: idPlaces },
-    },
-  });
-
-  const perks = await prisma.perks.findMany({
-    where: {
-      placeId: {
-        in: idPlaces,
+  try {
+    const places = await prisma.places.findMany({
+      where: {
+        userId: params.userId,
       },
-    },
-  });
-  return NextResponse.json({ places, perks, photos });
+    });
+
+    const idPlaces = places.map((place: Place) => place.id);
+
+    const photos = await prisma.photos.findMany({
+      where: {
+        placeId: { in: idPlaces },
+      },
+    });
+
+    const perks = await prisma.perks.findMany({
+      where: {
+        placeId: {
+          in: idPlaces,
+        },
+      },
+    });
+    return NextResponse.json({ places, perks, photos });
+  } catch (error) {
+    console.error("Error in GET:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(
@@ -47,6 +55,9 @@ export async function POST(
       maxGuests,
       photos,
       perks,
+      price,
+      country,
+      currency,
     } = await request.json();
 
     const newPlace = await prisma.places.create({
@@ -59,6 +70,9 @@ export async function POST(
         checkIn,
         checkOut,
         maxGuests,
+        price,
+        country,
+        currency,
       },
     });
 

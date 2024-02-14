@@ -14,6 +14,7 @@ import UploadImages from "./UploadImages";
 import Loading from "@/app/loading";
 import Input from "./Input";
 import TextAreaInput from "./TextAreaInput";
+import SelectCountries from "./SelectCountries";
 
 function PlaceForm({
   placeId,
@@ -28,15 +29,15 @@ function PlaceForm({
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    getValues,
     reset,
   } = useForm<FormInputs>({
     resolver: zodResolver(PlaceSchema),
   });
+
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [cloudFilesToShow, setCloudFilesToShow] = useState<Photos[]>([]);
-
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   //fetch the data when editing a place
@@ -45,9 +46,7 @@ function PlaceForm({
     if (!placeId) return;
     setLoading(true);
     const fetchPlaceForm = async () => {
-      const response = await fetch(
-        `http://localhost:3000/api/places/${placeId}`
-      );
+      const response = await fetch(`/api/places/${placeId}`);
       const data = await response.json();
 
       setCloudFilesToShow(data.filteredPhotos);
@@ -72,12 +71,10 @@ function PlaceForm({
       let photosUrl: Omit<Photos, "placeId">[] = [];
       if (data.photos.length > 0) {
         const formData = new FormData();
-
         for (let i = 0; i < data.photos.length; i++) {
           let file = data.photos[i];
           formData.append("file", file);
           formData.append("upload_preset", "Places_airbnb");
-
           const photosResponse = await fetch(
             `https://api.cloudinary.com/v1_1/dhjqarghy/image/upload`,
             {
@@ -93,7 +90,6 @@ function PlaceForm({
           url: image.secure_url,
         }));
       }
-
       if (placeId) {
         const placeResponse = await fetch(`/api/places/${placeId}`, {
           method: "PATCH",
@@ -124,7 +120,6 @@ function PlaceForm({
         reset();
         return;
       }
-
       const response = await fetch(`/api/users/${userId}/places`, {
         method: "POST",
         body: JSON.stringify({ ...data, photos: photosUrl }),
@@ -177,6 +172,17 @@ function PlaceForm({
                 register={register}
                 errors={errors}
               />
+              <Input
+                label="Check-In"
+                description="Specify check-in timing."
+                name="checkIn"
+                register={register}
+                errors={errors}
+                id="checkIn"
+                type="number"
+                min={0}
+                max={23}
+              />
               <TextAreaInput
                 label="Description"
                 description="Craft a short, enticing property overview."
@@ -193,19 +199,24 @@ function PlaceForm({
                 errors={errors}
                 id="extraInfo"
               />
-              <Input
-                label="Check In"
-                description="Specify check-in timing."
-                name="checkIn"
+              <SelectCountries
                 register={register}
                 errors={errors}
-                id="checkIn"
-                type="number"
-                min={0}
-                max={23}
+                setValue={setValue}
+                watch={watch}
               />
               <Input
-                label="Check Out"
+                label="Price"
+                description="Indicate price per night of your place"
+                name="price"
+                register={register}
+                errors={errors}
+                id="price"
+                type="number"
+              />
+
+              <Input
+                label="Check-Out"
                 description="Outline the check-out time."
                 name="checkOut"
                 register={register}

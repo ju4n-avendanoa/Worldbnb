@@ -2,12 +2,12 @@
 
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Perks, Photos, Place } from "@/interfaces/placeinterface";
-import { Toaster, toast } from "sonner";
 import { perksLogos } from "@/utils/perksLogos";
 import { useRouter } from "next-nprogress-bar";
-import { deletePlace } from "@/utils/deletePlace";
-import ImageWithFallback from "./ImageWithFallback";
+import { deletePlace } from "@/actions/deletePlace";
 import { fallbackImage } from "@/utils/fallbackImage";
+import { toast } from "sonner";
+import ImageWithFallback from "../ImageWithFallback";
 
 type Props = {
   place: Place;
@@ -47,10 +47,12 @@ function PlaceBanner({ place, perks, photos }: Props) {
             onClick={() => {
               toast.promise(deletePlace(place.id, photos), {
                 loading: "Loading...",
-                success: "Place deleted successfuly",
+                success: () => {
+                  router.refresh();
+                  return "Place deleted successfuly";
+                },
                 error: "Error deleting the place, please try again later",
               });
-              router.refresh();
             }}
           >
             <p className="text-white max-lg:hidden">delete</p>
@@ -94,7 +96,6 @@ function PlaceBanner({ place, perks, photos }: Props) {
           ))}
         </div>
       </div>
-      {/* <Toaster /> */}
     </>
   );
 }

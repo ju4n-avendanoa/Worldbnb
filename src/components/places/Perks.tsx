@@ -1,7 +1,7 @@
 import { UseFormRegister, UseFormWatch } from "react-hook-form";
 import { FormInputs } from "@/interfaces/formInterface";
 import { perksLogos } from "@/utils/perksLogos";
-import ImageWithFallback from "./ImageWithFallback";
+import ImageWithFallback from "../ImageWithFallback";
 
 const perksData = [
   {

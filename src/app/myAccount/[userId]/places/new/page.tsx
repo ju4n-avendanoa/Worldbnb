@@ -1,4 +1,4 @@
-import PlaceForm from "@/components/PlaceForm";
+import PlaceForm from "@/components/places/PlaceForm";
 
 export const revalidate = 0;
 

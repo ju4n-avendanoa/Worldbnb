@@ -1,7 +1,6 @@
-import Loading from "@/app/loading";
+import { Suspense } from "react";
 import LoadingCard from "@/components/LoadingCard";
-import Places from "@/components/Places";
-import React, { Suspense } from "react";
+import Places from "@/components/places/Places";
 
 export const revalidate = 0;
 

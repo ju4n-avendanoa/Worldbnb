@@ -63,6 +63,9 @@ export async function PATCH(
       checkOut,
       maxGuests,
       perks,
+      country,
+      price,
+      currency,
     } = await request.json();
 
     await prisma.places.update({
@@ -75,6 +78,9 @@ export async function PATCH(
         checkIn,
         checkOut,
         maxGuests,
+        country,
+        price,
+        currency,
       },
     });
 
