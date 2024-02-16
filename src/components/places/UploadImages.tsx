@@ -71,7 +71,7 @@ function UploadImages({
     <>
       <label htmlFor="upload">
         <span className="font-semibold">Photos</span>
-        <div className="flex flex-col items-center w-full p-2 border cursor-pointer rounded-2xl">
+        <div className="flex flex-col items-center w-full p-2 border cursor-pointer rounded-2xl hover:bg-gray-200">
           <ImageWithFallback
             src={
               "https://res.cloudinary.com/dhjqarghy/image/upload/v1706112761/Airbnb/cloud-arrow-up-svgrepo-com_efugzf.svg"

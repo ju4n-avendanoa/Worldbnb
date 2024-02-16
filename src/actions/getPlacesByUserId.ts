@@ -6,11 +6,11 @@ export default async function getPlacesByUserId(userId: string) {
       cache: "no-store",
     });
     if (!response.ok) {
-      console.log("error");
+      const responseError = await response.json();
+      throw new Error(responseError);
     }
 
     const placesInformation = await response.json();
-    console.log(placesInformation);
     return placesInformation;
   } catch (error: any) {
     console.log(error);

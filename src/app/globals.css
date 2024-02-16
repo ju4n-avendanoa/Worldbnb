@@ -97,3 +97,15 @@
   height: 40px;
   animation: spin 1s linear infinite;
 }
+
+.one-two-children {
+  @apply row-span-2 col-span-2;
+}
+
+.three-five-children {
+  @apply first:row-span-2 first:col-span-2;
+}
+
+.four-children-columns {
+  @apply grid-cols-2;
+}

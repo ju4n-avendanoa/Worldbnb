@@ -27,6 +27,9 @@ export interface Place {
   checkOut: number;
   maxGuests: number;
   perks: Perks;
+  country: string;
+  currency: string;
+  price: number;
 }
 
 export interface Photos {

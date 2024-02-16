@@ -10,7 +10,7 @@ function NavBar() {
   const [details, setDetails] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-20 flex flex-col gap-4 p-4 bg-white border">
+    <nav className="sticky top-0 z-20 flex flex-col gap-4 px-16 py-2 bg-white border">
       <div className="flex items-center justify-between">
         <Logo />
 

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Perks, Places, PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { omit } from "lodash";
 import { Photos } from "@/interfaces/placeinterface";
@@ -37,12 +37,12 @@ export async function GET(
       },
     });
 
-    const filteredPhotos = photos.map((photo: Photos) =>
+    const filteredPhotos: Photos[] = photos.map((photo: Photos) =>
       omit(photo, ["placeId"])
     );
 
-    const filteredPlace = omit(place, ["id", "userId"]);
-    const filteredPerks = omit(perks, ["id", "placeId"]);
+    const filteredPlace: Places = omit(place, ["id", "userId"]);
+    const filteredPerks: Perks = omit(perks, ["id", "placeId"]);
     return NextResponse.json({ filteredPlace, filteredPerks, filteredPhotos });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

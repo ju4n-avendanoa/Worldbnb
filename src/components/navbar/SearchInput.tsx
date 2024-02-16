@@ -68,7 +68,7 @@ function SearchInput() {
   };
 
   return (
-    <div className="relative flex items-center w-1/2 gap-2 pr-2 border border-gray-300 rounded-full shadow-lg">
+    <div className="relative flex items-center w-1/2 gap-2 pr-2 border border-gray-300 rounded-full shadow-lg max-lg:hidden">
       <input
         type="text"
         className="w-1/2 px-4 py-5 text-base border-r-2 rounded-full outline-none hover:bg-gray-200 placeholder:text-gray-500"
@@ -182,7 +182,7 @@ function SearchInput() {
         </div>
       ) : null}
       {showGuests ? (
-        <div className="absolute left-0 z-20 w-full p-6 bg-white border shadow-xl top-[70px]">
+        <div className="absolute left-0 z-20 w-full p-6 bg-white border shadow-xl top-[70px] rounded-lg">
           <div className="flex items-center justify-around">
             <div className="flex items-center gap-4">
               <UsersIcon className="w-7" />
@@ -192,15 +192,16 @@ function SearchInput() {
               <button
                 onClick={() => setGuests((prev) => prev - 1)}
                 disabled={guests === 0}
-                className="w-10 h-10 text-2xl border border-black rounded-full disabled:border-gray-400 disabled:text-gray-400"
+                className="w-10 h-10 text-2xl transition duration-150 rounded-full bg-sky-700 disabled:bg-gray-300 active:scale-90"
               >
-                -
+                <span className="font-bold text-white">-</span>
               </button>
               <p>{guests}</p>
               <button
-                className="w-10 h-10 text-2xl border border-black rounded-full"
+                className="w-10 h-10 text-2xl font-bold text-white transition duration-150 rounded-full bg-sky-700 active:scale-90"
                 onClick={() => setGuests((prev) => prev + 1)}
               >
+                {" "}
                 +
               </button>
             </div>

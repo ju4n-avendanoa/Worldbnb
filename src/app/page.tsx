@@ -17,16 +17,20 @@ export default async function Home() {
   }
 
   return (
-    <main className=" min-h-screen w-full ">
+    <main className="w-full min-h-screen ">
       <section
-        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 py-10 px-16 gap-6"
-        style={{ gridAutoRows: "450px" }}
+        className="grid grid-cols-1 gap-6 px-10 md:px-16 py-10 md:grid-cols-2 xl:grid-cols-4"
+        style={{ gridAutoRows: "400px" }}
       >
         {places.map((place) => {
           const placePhotos = photos.find(
             (photo) => place.id === photo.placeId
           );
-          return <ListingCard place={place} photos={placePhotos} />;
+          return (
+            <article key={place.id}>
+              <ListingCard place={place} photos={placePhotos} />
+            </article>
+          );
         })}
       </section>
     </main>

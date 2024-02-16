@@ -172,17 +172,6 @@ function PlaceForm({
                 register={register}
                 errors={errors}
               />
-              <Input
-                label="Check-In"
-                description="Specify check-in timing."
-                name="checkIn"
-                register={register}
-                errors={errors}
-                id="checkIn"
-                type="number"
-                min={0}
-                max={23}
-              />
               <TextAreaInput
                 label="Description"
                 description="Craft a short, enticing property overview."
@@ -214,7 +203,17 @@ function PlaceForm({
                 id="price"
                 type="number"
               />
-
+              <Input
+                label="Check-In"
+                description="Specify check-in timing."
+                name="checkIn"
+                register={register}
+                errors={errors}
+                id="checkIn"
+                type="number"
+                min={0}
+                max={23}
+              />
               <Input
                 label="Check-Out"
                 description="Outline the check-out time."

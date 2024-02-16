@@ -15,7 +15,7 @@ type Props = {
   photos: Photos[];
 };
 
-function PlaceBanner({ place, perks, photos }: Props) {
+function UserPlaceBanner({ place, perks, photos }: Props) {
   const router = useRouter();
 
   //Perks marked as true
@@ -100,4 +100,4 @@ function PlaceBanner({ place, perks, photos }: Props) {
   );
 }
 
-export default PlaceBanner;
+export default UserPlaceBanner;

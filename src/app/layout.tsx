@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Sans, Lato } from "next/font/google";
+import { Inter, Noto_Sans, Lato, Mulish } from "next/font/google";
 import { Toaster } from "sonner";
 import NavBar from "@/components/navbar/NavBar";
 import Provider from "@/context/Provider";
 import LoadProvider from "@/context/LoadProvider";
 import "./globals.css";
 
-const lato = Lato({ subsets: ["latin"], weight: "400" });
+const mulish = Mulish({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Provider>
-        <body className={`${lato.className} min-h-screen`}>
+        <body className={`${mulish.className} min-h-screen`}>
           <LoadProvider>
             <NavBar />
             {children}

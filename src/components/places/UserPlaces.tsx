@@ -1,10 +1,9 @@
-import AddPlaceButton from "@/components/places/AddPlaceButton";
-import PlaceBanner from "@/components/places/PlaceBanner";
 import { Perks, Photos, Place } from "@/interfaces/placeinterface";
+import AddPlaceButton from "@/components/places/AddPlaceButton";
+import UserPlaceBanner from "@/components/places/UserPlaceBanner";
 import getPlacesByUserId from "@/actions/getPlacesByUserId";
-import React from "react";
 
-async function Places({ userId }: { userId: string }) {
+async function UserPlaces({ userId }: { userId: string }) {
   const {
     places,
     perks,
@@ -29,7 +28,7 @@ async function Places({ userId }: { userId: string }) {
               key={place.id}
               className="relative flex flex-col w-full gap-5 p-4 my-2 text-sm bg-gray-100 border shadow-lg md:flex-row rounded-xl h-min lg:text-base shadow-gray-700"
             >
-              <PlaceBanner
+              <UserPlaceBanner
                 place={place}
                 perks={placePerks}
                 photos={placePhotos}
@@ -44,4 +43,4 @@ async function Places({ userId }: { userId: string }) {
   );
 }
 
-export default Places;
+export default UserPlaces;
