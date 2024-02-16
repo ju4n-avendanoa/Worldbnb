@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { FormInputs, Perk } from "@/interfaces/formInterface";
 import { useEffect, useState } from "react";
 import { useRouter } from "next-nprogress-bar";
-import { ImageResponse } from "@/interfaces/cloudinaryResponse";
 import { Photos } from "@/interfaces/placeinterface";
 import { toast } from "sonner";
 import Perks from "./Perks";
@@ -73,8 +72,12 @@ function PlaceForm({
         async () => {
           if (placeId) {
             await updatePlace(placeId, data, userId);
+            router.push(`/myAccount/${userId}/places`);
+            reset();
           } else {
             await createPlace(data, userId);
+            router.push(`/myAccount/${userId}/places`);
+            reset();
           }
         },
         {
@@ -83,8 +86,6 @@ function PlaceForm({
           error: "Failed to save place",
         }
       );
-
-      reset();
     } catch (error: any) {
       console.log(error);
     }
@@ -146,7 +147,7 @@ function PlaceForm({
               />
               <Input
                 label="Price"
-                description="Indicate price per night of your place"
+                description="Indicate price per night of your place."
                 name="price"
                 register={register}
                 errors={errors}
@@ -155,7 +156,7 @@ function PlaceForm({
               />
               <Input
                 label="Check-In"
-                description="Specify check-in timing."
+                description="Specify check-in timing. (0h-23h format)"
                 name="checkIn"
                 register={register}
                 errors={errors}
@@ -166,7 +167,7 @@ function PlaceForm({
               />
               <Input
                 label="Check-Out"
-                description="Outline the check-out time."
+                description="Outline the check-out time. (0h-23h format)"
                 name="checkOut"
                 register={register}
                 errors={errors}

@@ -35,15 +35,15 @@ export const PlaceSchema = z.object({
   extraInfo: z.string().min(1, { message: "extra Info cannot be empty" }),
   checkIn: z.coerce
     .number()
-    .gte(0.1, "Check-in hours must be between 0 and 23 hours.")
+    .gt(0, "Check-in hours must be between 0 and 23 hours.")
     .lte(23, "Check-in hours must be between 0 and 23 hours."),
   checkOut: z.coerce
     .number()
-    .gte(0.1, "Check-out hours must be between 0 and 23 hours.")
+    .gt(0, "Check-out hours must be between 0 and 23 hours.")
     .lte(23, "Check-out hours must be between 0 and 23 hours."),
   maxGuests: z.coerce
     .number()
-    .gte(0.1, "Minimum number of guests must be minimum 1"),
+    .gt(0, "Minimum number of guests must be minimum 1"),
   country: z
     .string()
     .refine((value) => typeof value === "string" && value.trim() !== "", {
