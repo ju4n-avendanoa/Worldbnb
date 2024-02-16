@@ -2,12 +2,13 @@
 
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Perks, Photos, Place } from "@/interfaces/placeinterface";
-import { perksLogos } from "@/utils/perksLogos";
-import { useRouter } from "next-nprogress-bar";
-import { deletePlace } from "@/actions/deletePlace";
 import { fallbackImage } from "@/utils/fallbackImage";
+import { deletePlace } from "@/actions/deletePlace";
+import { useRouter } from "next-nprogress-bar";
+import { truePerks } from "@/utils/truePerks";
 import { toast } from "sonner";
 import ImageWithFallback from "../ImageWithFallback";
+import PerksBanner from "./PerksBanner";
 
 type Props = {
   place: Place;
@@ -18,15 +19,9 @@ type Props = {
 function UserPlaceBanner({ place, perks, photos }: Props) {
   const router = useRouter();
 
-  //Perks marked as true
-
-  let truePerks: string[] = [];
+  let placePerks: string[] = [];
   if (perks) {
-    truePerks = Object.entries(perks)
-      .filter(
-        ([key, value]) => key !== "id" && key !== "placeId" && value === true
-      )
-      .map(([key]) => key);
+    placePerks = truePerks(perks);
   }
 
   return (
@@ -79,19 +74,9 @@ function UserPlaceBanner({ place, perks, photos }: Props) {
         <p className="whitespace-pre-line">{place.description}</p>
         <h4 className="font-bold">Perks:</h4>
         <div className="flex flex-wrap w-full gap-2 ">
-          {truePerks.map((perk, index) => (
-            <div
-              className="flex items-center justify-center border-2 rounded-lg border-sky-700 bg-sky-50 w-7 h-7 lg:w-10 lg:h-10"
-              key={index}
-            >
-              <ImageWithFallback
-                src={perksLogos[perk].link}
-                fallbackSrc={perksLogos.default.link}
-                alt={perk}
-                height={50}
-                width={50}
-                className="w-4 h-auto lg:w-7"
-              />
+          {placePerks.map((perk, index) => (
+            <div key={index}>
+              <PerksBanner perk={perk} />
             </div>
           ))}
         </div>

@@ -5,7 +5,7 @@ import ImageWithFallback from "../ImageWithFallback";
 import { fallbackImage } from "@/utils/fallbackImage";
 import { Photos, Place } from "@/interfaces/placeinterface";
 import { useRouter } from "next-nprogress-bar";
-import { addComma } from "@/actions/addComma";
+import { addComma } from "@/utils/addComma";
 
 type Props = {
   place: Place;
