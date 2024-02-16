@@ -25,3 +25,5 @@ const createPlace = async (data: FormInputs, userId: string) => {
     console.error(error);
   }
 };
+
+export default createPlace;

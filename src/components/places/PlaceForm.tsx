@@ -15,6 +15,8 @@ import Loading from "@/app/loading";
 import Input from "./Input";
 import TextAreaInput from "./TextAreaInput";
 import SelectCountries from "./SelectCountries";
+import updatePlace from "@/actions/updatePlace";
+import createPlace from "@/actions/createPlace";
 
 function PlaceForm({
   placeId,
@@ -67,73 +69,21 @@ function PlaceForm({
 
   const onSubmit = async (data: FormInputs) => {
     try {
-      let urlResponse: ImageResponse[] = [];
-      let photosUrl: Omit<Photos, "placeId">[] = [];
-      if (data.photos.length > 0) {
-        const formData = new FormData();
-        for (let i = 0; i < data.photos.length; i++) {
-          let file = data.photos[i];
-          formData.append("file", file);
-          formData.append("upload_preset", "Places_airbnb");
-          const photosResponse = await fetch(
-            `https://api.cloudinary.com/v1_1/dhjqarghy/image/upload`,
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-          if (!photosResponse.ok) continue;
-          urlResponse.push(await photosResponse.json());
-        }
-        photosUrl = urlResponse.map((image: ImageResponse) => ({
-          photoId: image.public_id,
-          url: image.secure_url,
-        }));
-      }
-      if (placeId) {
-        const placeResponse = await fetch(`/api/places/${placeId}`, {
-          method: "PATCH",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!placeResponse.ok) {
-          const error = await placeResponse.json();
-          toast.error("There was an error, please try again later");
-          throw new Error(error.error);
-        }
-        const photosResponse = await fetch(`/api/photos/${placeId}`, {
-          method: "POST",
-          body: JSON.stringify({ photosUrl }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!photosResponse.ok) {
-          toast.error("There was an error, please try again later");
-          const error = await photosResponse.json();
-          throw new Error(error.error);
-        }
-        toast.success("Place updated successfully");
-        router.push(`/myAccount/${userId}/places`);
-        reset();
-        return;
-      }
-      const response = await fetch(`/api/users/${userId}/places`, {
-        method: "POST",
-        body: JSON.stringify({ ...data, photos: photosUrl }),
-        headers: {
-          "Content-Type": "application/json",
+      toast.promise(
+        async () => {
+          if (placeId) {
+            await updatePlace(placeId, data, userId);
+          } else {
+            await createPlace(data, userId);
+          }
         },
-      });
-      if (!response.ok) {
-        toast.error("There was an error, please try again later");
-        const error = await response.json();
-        throw new Error(error.error);
-      }
-      toast.success("Place created successfully");
-      router.push(`/myAccount/${userId}/places`);
+        {
+          loading: "Saving...",
+          success: "Place saved successfully!",
+          error: "Failed to save place",
+        }
+      );
+
       reset();
     } catch (error: any) {
       console.log(error);
@@ -251,7 +201,7 @@ function PlaceForm({
               <div className="py-3">
                 <button
                   type="submit"
-                  className="w-full p-3 text-base font-medium text-white border rounded-md bg-sky-600 hover:bg-sky-700"
+                  className="w-full p-3 text-base font-medium text-white border rounded-md bg-sky-600 hover:bg-sky-700 disabled:bg-gray-300"
                   disabled={isSubmitting}
                 >
                   add new place
