@@ -2,24 +2,25 @@ import { KeyboardEvent, useEffect, useState } from "react";
 import { MagnifyingGlassIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next-nprogress-bar";
-import { DateRangePicker } from "react-date-range";
+import { DateRange, DateRangePicker } from "react-date-range";
 import useCountries, { Country } from "@/hooks/useCountries";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { useSearchParams } from "next/navigation";
+import { fromLongToShortDate } from "@/utils/formatDate";
 
 function SearchInput() {
   const searchParams = useSearchParams();
 
-  const [details, setDetails] = useState(false);
   const [countriesResults, setCountriesResults] = useState<Country[]>([]);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [currentIndex, setCurrenIndex] = useState(-1);
+  const [showGuests, setShowGuests] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [details, setDetails] = useState(false);
   const [search, setSearch] = useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
   const [guests, setGuests] = useState(0);
-  const [showGuests, setShowGuests] = useState(false);
 
   const router = useRouter();
   const { getCountryByValue } = useCountries();
@@ -66,6 +67,8 @@ function SearchInput() {
     endDate: endDate,
     key: "selection",
   };
+
+  fromLongToShortDate(startDate);
 
   return (
     <div className="relative flex items-center w-1/2 gap-2 pr-2 border border-gray-300 rounded-full shadow-lg max-lg:hidden">
@@ -172,7 +175,7 @@ function SearchInput() {
       {showCalendar ? (
         <div className="absolute z-20 bg-white border shadow-xl left-20 w-min top-[70px]">
           <div className="flex justify-center">
-            <DateRangePicker
+            <DateRange
               ranges={[selectionRange]}
               minDate={new Date()}
               rangeColors={["#0369A1"]}
@@ -201,7 +204,6 @@ function SearchInput() {
                 className="w-10 h-10 text-2xl font-bold text-white transition duration-150 rounded-full bg-sky-700 active:scale-90"
                 onClick={() => setGuests((prev) => prev + 1)}
               >
-                {" "}
                 +
               </button>
             </div>

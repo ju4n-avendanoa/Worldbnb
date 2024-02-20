@@ -1,14 +1,14 @@
 "use client";
 
+import { Perks, Photos, Place } from "@/interfaces/placeinterface";
+import { useEffect, useState } from "react";
+import { FormInputs, Perk } from "@/interfaces/formInterface";
 import { PlaceSchema } from "@/validations/placeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { FormInputs, Perk } from "@/interfaces/formInterface";
-import { useEffect, useState } from "react";
 import { useRouter } from "next-nprogress-bar";
-import { Photos } from "@/interfaces/placeinterface";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import Perks from "./Perks";
+import PerksList from "./PerksList";
 import UploadImages from "./UploadImages";
 import Loading from "@/app/loading";
 import Input from "./Input";
@@ -48,14 +48,20 @@ function PlaceForm({
     setLoading(true);
     const fetchPlaceForm = async () => {
       const response = await fetch(`/api/places/${placeId}`);
-      const data = await response.json();
+      const {
+        place,
+        perks,
+        photos,
+      }: { place: Place; perks: Perks; photos: Photos[] } =
+        await response.json();
 
-      setCloudFilesToShow(data.filteredPhotos);
-      Object.entries(data.filteredPlace).forEach(([key, value]) =>
+      setCloudFilesToShow(photos);
+
+      Object.entries(place).forEach(([key, value]) =>
         setValue(key as keyof FormInputs, value as string | number)
       );
 
-      Object.entries(data.filteredPerks).forEach(([key, value]) =>
+      Object.entries(perks).forEach(([key, value]) =>
         setValue(`perks.${key as keyof Perk}`, value as boolean)
       );
       setLoading(false);
@@ -178,7 +184,7 @@ function PlaceForm({
               />
             </section>
             <section className="w-full px-10">
-              <Perks register={register} watch={watch} />
+              <PerksList register={register} watch={watch} />
               <UploadImages
                 register={register}
                 errors={errors}

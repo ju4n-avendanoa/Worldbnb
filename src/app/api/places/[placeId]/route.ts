@@ -37,13 +37,7 @@ export async function GET(
       },
     });
 
-    const filteredPhotos: Photos[] = photos.map((photo: Photos) =>
-      omit(photo, ["placeId"])
-    );
-
-    const filteredPlace: Places = omit(place, ["id", "userId"]);
-    const filteredPerks: Perks = omit(perks, ["id", "placeId"]);
-    return NextResponse.json({ filteredPlace, filteredPerks, filteredPhotos });
+    return NextResponse.json({ place, perks, photos });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

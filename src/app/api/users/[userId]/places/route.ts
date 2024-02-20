@@ -15,7 +15,7 @@ export async function GET(
       },
     });
 
-    const idPlaces = places.map((place: Place) => place.id);
+    const idPlaces = places.map((place) => place.id);
 
     const photos = await prisma.photos.findMany({
       where: {

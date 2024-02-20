@@ -78,7 +78,7 @@ const perksData = [
   },
 ];
 
-function Perks({
+function PerksList({
   register,
   watch,
 }: {
@@ -121,4 +121,4 @@ function Perks({
   );
 }
 
-export default Perks;
+export default PerksList;

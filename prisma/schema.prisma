@@ -44,6 +44,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   places        Places[] 
+  reservations  Reservation[]
 }
 
 model VerificationToken {
@@ -69,6 +70,7 @@ model Places {
   maxGuests       Int
   photos          Photos[]
   perks           Perks[]
+  reservations    Reservation[]
   user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
   
 }
@@ -97,4 +99,17 @@ model Perks {
   gym              Boolean
   cleaningService  Boolean
   places           Places @relation(fields: [placeId], references: [id], onDelete: Cascade)
+}
+
+model Reservation {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String @db.ObjectId
+  placeId       String @db.ObjectId  
+  startDate       DateTime
+  endDate         DateTime
+  totalPrice      Int
+  createdAt       DateTime @default(now())
+
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing         Places @relation(fields: [placeId], references: [id], onDelete: Cascade)
 }

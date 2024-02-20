@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     const perks = await prisma.perks.findMany();
     const photos = await prisma.photos.findMany();
     return NextResponse.json({ places, perks, photos });
-  } catch {
+  } catch (error: any) {
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }

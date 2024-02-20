@@ -1,11 +1,10 @@
 "use client";
 
-import React from "react";
-import ImageWithFallback from "../ImageWithFallback";
 import { fallbackImage } from "@/utils/fallbackImage";
 import { Photos, Place } from "@/interfaces/placeinterface";
 import { useRouter } from "next-nprogress-bar";
 import { addComma } from "@/utils/addComma";
+import ImageWithFallback from "../ImageWithFallback";
 
 type Props = {
   place: Place;

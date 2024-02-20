@@ -2,11 +2,11 @@
 
 import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { Suspense, useState } from "react";
-import Logo from "./Logo";
-import UserMenu from "./UserMenu";
-import SearchInput from "./SearchInput";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import ImageWithFallback from "../ImageWithFallback";
+import SearchInput from "./SearchInput";
+import UserMenu from "./UserMenu";
+import Logo from "./Logo";
 
 function NavBar() {
   const [details, setDetails] = useState(false);
@@ -29,12 +29,13 @@ function NavBar() {
           <div className="flex gap-4 cursor-pointer">
             <Bars3Icon className="w-6 h-6" />
             {session?.user.image ? (
-              <Image
+              <ImageWithFallback
                 src={session.user.image}
                 alt="profile-photo"
                 width={300}
                 height={300}
                 className="w-6 h-auto rounded-full"
+                fallbackSrc="https://res.cloudinary.com/dhjqarghy/image/upload/v1708459216/Airbnb/user-circle-svgrepo-com_o8x5oh.svg"
               />
             ) : (
               <UserCircleIcon className="w-6 h-6  fill-[#2D7FCC] hidden md:inline-flex" />
