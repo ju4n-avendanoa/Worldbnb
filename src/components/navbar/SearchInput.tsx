@@ -134,7 +134,7 @@ function SearchInput() {
         className="flex items-center justify-around gap-2 px-3 py-3 text-white transition duration-150 rounded-full w-[10%] bg-sky-700 active:scale-95"
         onClick={() => {
           router.push(
-            `/homes?country=${search}&startDate=${startDate}&endDate=${endDate}&guests=${guests}`
+            `/homes?country=${search.toLowerCase()}&startDate=${startDate}&endDate=${endDate}&guests=${guests}`
           );
           setStartDate(new Date());
           setEndDate(new Date());

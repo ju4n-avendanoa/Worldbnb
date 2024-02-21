@@ -4,53 +4,51 @@ import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
+  const country = searchParams.get("country");
+  const startDate = searchParams.get("startDate");
+  const endDate = searchParams.get("endDate");
+  const guests = Number(searchParams.get("guests"));
 
-    const placeId = searchParams.get("placeId");
+  let query: any = {};
 
-    if (!placeId) {
-      const reservations = await prisma.reservation.findMany();
-
-      return NextResponse.json(reservations);
-    }
-    const reservation = await prisma.reservation.findMany({
-      where: {
-        placeId: placeId,
-      },
-    });
-
-    return NextResponse.json(reservation);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: "Internal server error" },
-      { status: 500 }
-    );
+  if (country) {
+    query.country = {
+      contains: country,
+    };
   }
-}
 
-export async function POST(request: Request) {
-  try {
-    const { totalPrice, startDate, endDate, placeId, userId } =
-      await request.json();
-
-    console.log({ totalPrice, startDate, endDate, placeId, userId });
-
-    const newReservation = await prisma.reservation.create({
-      data: {
-        totalPrice,
-        startDate,
-        endDate,
-        placeId,
-        userId,
-      },
-    });
-
-    return NextResponse.json("Reservation created successfully");
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: "Internal server error" },
-      { status: 500 }
-    );
+  if (guests) {
+    query.maxGuests = {
+      gte: +guests,
+    };
   }
+
+  if (startDate && endDate) {
+    const parseStartDate = new Date(startDate);
+    const parseEndDate = new Date(endDate);
+    query.NOT = {
+      reservations: {
+        some: {
+          OR: [
+            {
+              endDate: { gte: parseStartDate },
+              startDate: { lte: parseStartDate },
+            },
+            {
+              startDate: { lte: parseEndDate },
+              endDate: { gte: parseEndDate },
+            },
+          ],
+        },
+      },
+    };
+  }
+
+  const availablePlaces = await prisma.places.findMany({
+    where: query,
+  });
+  availablePlaces.map((place) => console.log(place.title));
+
+  return NextResponse.json(availablePlaces);
 }

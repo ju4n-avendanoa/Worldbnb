@@ -1,6 +1,6 @@
-import { addComma } from "@/utils/addComma";
-import React from "react";
 import { DateRange, Range } from "react-date-range";
+import { addComma } from "@/utils/addComma";
+import { useRouter } from "next-nprogress-bar";
 
 type Props = {
   price: number;
@@ -23,6 +23,8 @@ function PlaceReservation({
   disabled,
   disabledDates,
 }: Props) {
+  const router = useRouter();
+
   return (
     <div
       className="

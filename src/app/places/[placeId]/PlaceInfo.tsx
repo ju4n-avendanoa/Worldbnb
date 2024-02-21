@@ -77,7 +77,7 @@ function PlaceInfo({
     }
     setIsLoading(true);
 
-    const response = await fetch(`/api/reservations`, {
+    const response = await fetch(`/api/reservations/${place.id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ function PlaceInfo({
     setIsLoading(false);
 
     const data = await response.json();
-    return;
+    // return;
   };
 
   useEffect(() => {

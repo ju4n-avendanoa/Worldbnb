@@ -1,18 +1,21 @@
-import { Reservations } from "@/interfaces/reservations";
+import { ParamsProps } from "@/app/homes/page";
 import { baseUrl } from "@/utils/baseUrl";
 
-export async function getReservations(placeId?: string) {
+export async function getReservations({
+  country,
+  startDate,
+  endDate,
+  guests,
+}: ParamsProps["searchParams"]) {
   try {
     const response = await fetch(
-      `${baseUrl}/api/reservations?placeId=${placeId}`
+      `${baseUrl}/api/reservations?country=${country}&startDate=${startDate}&endDate=${endDate}&guests=${guests}`,
+      {
+        cache: "no-store",
+      }
     );
-    if (!response.ok) {
-      const errorResponse = await response.json();
-      throw new Error(errorResponse);
-    }
-    const reservations: Reservations[] = await response.json();
-    return reservations;
+    const data = await response.json();
   } catch (error: any) {
-    console.error(error);
+    console.log(error);
   }
 }

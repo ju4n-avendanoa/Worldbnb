@@ -1,14 +1,14 @@
 import { getPlaceById } from "@/actions/getPlaceById";
 import PlaceInfo from "./PlaceInfo";
 import getCurrentUser from "@/actions/getCurrentUser";
-import { getReservations } from "@/actions/getReservations";
+import { getReservationsByPlaceid } from "@/actions/getReservationsById";
 
 export const revalidate = 0;
 
 async function PlacePage({ params }: { params: { placeId: string } }) {
   const response = await getPlaceById(params.placeId);
   const session = await getCurrentUser();
-  const reservations = await getReservations(params.placeId);
+  const reservations = await getReservationsByPlaceid(params.placeId);
 
   if (!response) {
     return (
