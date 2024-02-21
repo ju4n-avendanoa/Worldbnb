@@ -1,13 +1,13 @@
 import { KeyboardEvent, useEffect, useState } from "react";
 import { MagnifyingGlassIcon, UsersIcon } from "@heroicons/react/24/solid";
+import useCountries, { Country } from "@/hooks/useCountries";
+import { fromLongToShortDate } from "@/utils/formatDate";
+import { useSearchParams } from "next/navigation";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next-nprogress-bar";
-import { DateRange, DateRangePicker } from "react-date-range";
-import useCountries, { Country } from "@/hooks/useCountries";
-import "react-date-range/dist/styles.css"; // main style file
+import { DateRange } from "react-date-range";
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { useSearchParams } from "next/navigation";
-import { fromLongToShortDate } from "@/utils/formatDate";
+import "react-date-range/dist/styles.css"; // main style file
 
 function SearchInput() {
   const searchParams = useSearchParams();
@@ -35,8 +35,16 @@ function SearchInput() {
     } else {
       setGuests(0);
     }
-    // if (startDateParams) setStartDate(startDateParams);
-    // if (endDateParams) setEndDate(endDateParams);
+    if (startDateParams) {
+      setStartDate(new Date(startDateParams));
+    } else {
+      setStartDate(new Date());
+    }
+    if (endDateParams) {
+      setEndDate(new Date(endDateParams));
+    } else {
+      setEndDate(new Date());
+    }
     if (countryParams) {
       setSearch(countryParams[0].toLocaleUpperCase() + countryParams.slice(1));
     } else {
@@ -74,7 +82,7 @@ function SearchInput() {
     <div className="relative flex items-center w-1/2 gap-2 pr-2 border border-gray-300 rounded-full shadow-lg max-lg:hidden">
       <input
         type="text"
-        className="w-1/2 px-4 py-5 text-base border-r-2 rounded-full outline-none hover:bg-gray-200 placeholder:text-gray-500"
+        className="w-1/2 px-4 py-5 text-base border-r-2 rounded-full outline-none hover:bg-gray-200 placeholder:text-gray-500 text-gray-500"
         placeholder="search destinations"
         value={search}
         onChange={(e) => {
@@ -96,13 +104,13 @@ function SearchInput() {
       <input
         className={`${
           showCalendar ? "border-2 border-gray-400 bg-gray-200 shadow-xl" : ""
-        } w-1/4 px-4 py-5 text-sm border-r-2 rounded-full outline-none cursor-pointer select-none hover:bg-gray-200`}
+        } w-1/4 px-4 py-5 text-sm border-r-2 rounded-full outline-none cursor-pointer select-none hover:bg-gray-200 text-gray-500`}
         onClick={() => {
           setShowGuests(false);
           setShowCalendar((prev) => !prev);
         }}
         value={
-          startDate
+          endDate > startDate
             ? `${startDate.toLocaleString("en-US", {
                 month: "short",
                 day: "numeric",
@@ -117,7 +125,7 @@ function SearchInput() {
       <input
         className={`${
           showGuests ? "border-2 border-gray-400 bg-gray-200 shadow-xl" : ""
-        } px-4 py-5 text-sm rounded-full outline-none cursor-pointer select-none w-[15%] hover:bg-gray-200`}
+        } px-4 py-5 text-sm rounded-full outline-none cursor-pointer select-none w-[15%] hover:bg-gray-200 text-gray-500`}
         onClick={() => {
           setShowCalendar(false);
           setShowGuests((prev) => !prev);
@@ -133,11 +141,11 @@ function SearchInput() {
         type="submit"
         className="flex items-center justify-around gap-2 px-3 py-3 text-white transition duration-150 rounded-full w-[10%] bg-sky-700 active:scale-95"
         onClick={() => {
+          setShowCalendar(false);
+          setShowGuests(false);
           router.push(
             `/homes?country=${search.toLowerCase()}&startDate=${startDate}&endDate=${endDate}&guests=${guests}`
           );
-          setStartDate(new Date());
-          setEndDate(new Date());
         }}
       >
         <MagnifyingGlassIcon className="w-4" />
@@ -173,13 +181,14 @@ function SearchInput() {
         ) : null}
       </ul>
       {showCalendar ? (
-        <div className="absolute z-20 bg-white border shadow-xl left-20 w-min top-[70px]">
-          <div className="flex justify-center">
+        <div className="absolute z-20 bg-transparent left-0 w-full top-[70px]">
+          <div className="flex justify-center w-full">
             <DateRange
               ranges={[selectionRange]}
               minDate={new Date()}
               rangeColors={["#0369A1"]}
               onChange={handleSelect}
+              className="border"
             />
           </div>
         </div>

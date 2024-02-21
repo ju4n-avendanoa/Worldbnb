@@ -45,10 +45,22 @@ export async function GET(request: Request) {
     };
   }
 
-  const availablePlaces = await prisma.places.findMany({
+  const places = await prisma.places.findMany({
     where: query,
   });
-  availablePlaces.map((place) => console.log(place.title));
+
+  const idPlaces = places.map((place) => place.id);
+
+  const photos = await prisma.photos.findMany({
+    where: {
+      placeId: { in: idPlaces },
+    },
+  });
+
+  const availablePlaces = places.map((place) => {
+    const placePhotos = photos.filter((photo) => photo.placeId === place.id);
+    return { place, photos: placePhotos };
+  });
 
   return NextResponse.json(availablePlaces);
 }

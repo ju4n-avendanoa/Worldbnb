@@ -11,10 +11,11 @@ export async function getReservations({
     const response = await fetch(
       `${baseUrl}/api/reservations?country=${country}&startDate=${startDate}&endDate=${endDate}&guests=${guests}`,
       {
-        cache: "no-store",
+        next: { revalidate: 360 },
       }
     );
     const data = await response.json();
+    return data;
   } catch (error: any) {
     console.log(error);
   }
