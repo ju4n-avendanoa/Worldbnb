@@ -6,8 +6,16 @@ import { getListings } from "@/actions/getListings";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "./Spinner";
 import ListingCard from "./places/ListingCard";
+import { getReservations } from "@/actions/getReservations";
 
-function LoadMore() {
+type Props = {
+  country: string;
+  startDate: string;
+  endDate: string;
+  guests: number;
+};
+
+function LoadMoreFilters({ country, startDate, endDate, guests }: Props) {
   const { ref, inView } = useInView();
   const [places, setPlaces] = useState<Place[]>([]);
   const [photos, setPhotos] = useState<Photos[]>([]);
@@ -16,15 +24,19 @@ function LoadMore() {
 
   useEffect(() => {
     if (inView && hasMoreData) {
-      getListings(page).then((res) => {
-        if (res.places.length > 0) {
-          setPlaces((prev) => [...prev, ...res.places]);
-          setPhotos((prev) => [...prev, ...res.photos]);
-          setPage((prev) => prev + 1);
-        } else {
-          setHasMoreData(false);
+      getReservations({ country, startDate, endDate, guests }, page).then(
+        (res: { place: Place; photos: Photos[] }[]) => {
+          if (res.length > 0) {
+            res.map((item) => {
+              setPlaces((prev) => [...prev, item.place]);
+              setPhotos((prev) => [...prev, ...item.photos]);
+            });
+            setPage((prev) => prev + 1);
+          } else {
+            setHasMoreData(false);
+          }
         }
-      });
+      );
     }
   }, [inView, hasMoreData]);
   return (
@@ -57,4 +69,4 @@ function LoadMore() {
   );
 }
 
-export default LoadMore;
+export default LoadMoreFilters;

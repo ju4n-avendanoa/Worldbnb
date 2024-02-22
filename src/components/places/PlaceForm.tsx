@@ -73,16 +73,15 @@ function PlaceForm({
   //Submit function to create or edit a place
 
   const onSubmit = async (data: FormInputs) => {
-    const dataToUpload = { ...data, country: data.country.toLowerCase() };
     try {
       toast.promise(
         async () => {
           if (placeId) {
-            await updatePlace(placeId, dataToUpload, userId);
+            await updatePlace(placeId, data, userId);
             router.push(`/myAccount/${userId}/places`);
             reset();
           } else {
-            await createPlace(dataToUpload, userId);
+            await createPlace(data, userId);
             router.push(`/myAccount/${userId}/places`);
             reset();
           }

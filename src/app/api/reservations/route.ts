@@ -1,3 +1,4 @@
+import { capitalize } from "@/utils/capitalize";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -9,12 +10,16 @@ export async function GET(request: Request) {
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
   const guests = Number(searchParams.get("guests"));
+  const page = Number(searchParams.get("page"));
+  const pageSize = 8;
+  const offset = (page - 1) * pageSize;
 
   let query: any = {};
 
   if (country) {
+    const capitalizedCountry = capitalize(country);
     query.country = {
-      contains: country,
+      contains: capitalizedCountry,
     };
   }
 
@@ -47,6 +52,8 @@ export async function GET(request: Request) {
 
   const places = await prisma.places.findMany({
     where: query,
+    take: pageSize,
+    skip: offset,
   });
 
   const idPlaces = places.map((place) => place.id);

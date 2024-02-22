@@ -13,13 +13,12 @@ import ShowMorePhotosButton from "@/components/ShowMorePhotosButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import PlaceReservation from "@/components/places/PlaceReservation";
 import PhotoCarousel from "@/components/photos/PhotoCarousel";
+import useCountries from "@/hooks/useCountries";
 import PerksBanner from "@/components/places/PerksBanner";
 import Heading from "@/components/Heading";
 import dynamic from "next/dynamic";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import useCountries from "@/hooks/useCountries";
-import { capitalize } from "@/utils/capitalize";
 
 const Mapa = dynamic(() => import("@/components/Mapa"), { ssr: false });
 
@@ -51,7 +50,7 @@ function PlaceInfo({
   const { getCountryByExactName } = useCountries();
 
   const router = useRouter();
-  const country = getCountryByExactName(capitalize(place.country));
+  const country = getCountryByExactName(place.country);
 
   let placePerks: string[] = [];
   if (perks) {
@@ -114,9 +113,7 @@ function PlaceInfo({
   return (
     <>
       <div className="px-4 md:px-20 lg:px-40 xl:px-48 py-4">
-        <h2 className="py-3 text-3xl font-semibold">{`${
-          place?.title
-        }, ${capitalize(place?.country)}`}</h2>
+        <h2 className="py-3 text-3xl font-semibold">{`${place?.title}, ${place?.country}`}</h2>
         <section
           className={`${
             photos?.length === 3 ? "grid-cols-3" : "grid-cols-2 lg:grid-cols-4"
