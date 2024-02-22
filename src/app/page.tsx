@@ -3,14 +3,10 @@ import ListingCard from "@/components/places/ListingCard";
 import { Perks, Photos, Place } from "@/interfaces/placeinterface";
 import { fallbackImage } from "@/utils/fallbackImage";
 import { getListings } from "@/actions/getListings";
+import LoadMore from "@/components/LoadMore";
 
 export default async function Home() {
-  const {
-    places,
-    perks,
-    photos,
-  }: { places: Place[]; perks: Perks[]; photos: Photos[] } =
-    await getListings();
+  const { places, photos } = await getListings(1);
 
   if (places.length === 0) {
     return <div>There is no places to show</div>;
@@ -33,6 +29,7 @@ export default async function Home() {
           );
         })}
       </section>
+      <LoadMore />
     </main>
   );
 }

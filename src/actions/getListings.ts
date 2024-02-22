@@ -1,15 +1,24 @@
+import { Perks, Photos, Place } from "@/interfaces/placeinterface";
 import { baseUrl } from "../utils/baseUrl";
 
-export async function getListings() {
+type QueryProps = {
+  places: Place[];
+  photos: Photos[];
+  perks: Perks[];
+};
+
+export async function getListings(page: number) {
   try {
-    const response = await fetch(`${baseUrl}/api/places`, {
+    const response = await fetch(`${baseUrl}/api/places?page=${page}`, {
       cache: "no-store",
     });
     if (!response.ok) {
       const errorResponse = await response.json();
       throw new Error(errorResponse);
     }
-    const { places, perks, photos } = await response.json();
+    const data: QueryProps = await response.json();
+
+    const { places, perks, photos } = data;
     return { places, perks, photos };
   } catch (error: any) {
     throw new Error(error);
