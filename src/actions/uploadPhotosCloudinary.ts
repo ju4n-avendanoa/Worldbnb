@@ -20,15 +20,18 @@ const uploadPhotos = async (photos: File[]) => {
           }
         );
         toast.success(`Photo: ${file.name} added`);
-
-        if (photosResponse.ok) {
-          urlResponse.push(await photosResponse.json());
+        console.log(photosResponse);
+        if (!photosResponse.ok) {
+          throw new Error();
         }
+        urlResponse.push(await photosResponse.json());
       } catch (error: any) {
         toast.error(`Photo: ${file.name} was not added`);
       }
     }
   }
+
+  console.log(urlResponse[0].secure_url);
 
   return urlResponse.map((image: ImageResponse) => ({
     photoId: image.public_id,

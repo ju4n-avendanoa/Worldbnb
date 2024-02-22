@@ -7,29 +7,26 @@ import { useEffect, useState } from "react";
 import { getListings } from "@/actions/getListings";
 import ListingCard from "./places/ListingCard";
 
-let page = 2;
-
 function LoadMore() {
   const { ref, inView } = useInView();
   const [places, setPlaces] = useState<Place[]>([]);
   const [photos, setPhotos] = useState<Photos[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true); // New state variable
+  const [page, setPage] = useState(2);
 
   useEffect(() => {
     if (inView && hasMoreData) {
       getListings(page).then((res) => {
-        console.log(res);
         if (res.places.length > 0) {
           setPlaces((prev) => [...prev, ...res.places]);
           setPhotos((prev) => [...prev, ...res.photos]);
-          page++;
+          setPage((prev) => prev + 1);
         } else {
           setHasMoreData(false);
         }
       });
     }
   }, [inView, hasMoreData]);
-
   return (
     <>
       <section

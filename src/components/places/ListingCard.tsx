@@ -5,6 +5,7 @@ import { Photos, Place } from "@/interfaces/placeinterface";
 import { useRouter } from "next-nprogress-bar";
 import { addComma } from "@/utils/addComma";
 import ImageWithFallback from "../ImageWithFallback";
+import { capitalize } from "@/utils/capitalize";
 
 type Props = {
   place: Place;
@@ -28,7 +29,9 @@ function ListingCard({ place, photos }: Props) {
         className="object-cover w-full rounded-2xl h-2/3"
       />
       <div className="flex flex-col gap-1 py-2 text-sm xl:text-base">
-        <h3 className="font-semibold">{`${place.title}, ${place.country}`}</h3>
+        <h3 className="font-semibold">{`${place.title}, ${capitalize(
+          place.country
+        )}`}</h3>
         <p className="text-neutral-500">{place.address}</p>
         <p className="font-semibold ">{`$${formattedPrice} ${place.currency}`}</p>
       </div>

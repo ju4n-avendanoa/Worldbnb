@@ -23,8 +23,6 @@ function PlaceReservation({
   disabled,
   disabledDates,
 }: Props) {
-  const router = useRouter();
-
   return (
     <div
       className="
@@ -42,7 +40,7 @@ function PlaceReservation({
       >
         <div className="text-2xl font-semibold">
           <span>$ {addComma(price)}</span>
-          <span>, {currency}</span>
+          <span> {currency}</span>
         </div>
         <div className="font-light text-neutral-600">night</div>
       </div>
@@ -70,7 +68,7 @@ function PlaceReservation({
       "
       >
         <div>Total</div>
-        <div>$ {`${addComma(totalPrice)}, ${currency}`}</div>
+        <div>$ {`${addComma(totalPrice)} ${currency}`}</div>
       </div>
     </div>
   );

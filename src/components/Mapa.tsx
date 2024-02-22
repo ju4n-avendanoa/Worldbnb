@@ -24,6 +24,7 @@ const attribution =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 function Mapa({ center }: MapProps) {
+  console.log(center);
   return (
     <MapContainer
       center={(center as L.LatLngExpression) || [51, -0.09]}

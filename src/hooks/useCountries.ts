@@ -43,8 +43,14 @@ const useCountries = () => {
 
     return filteredResults;
   };
+  const getCountryByExactName = (value: string) => {
+    const filteredResult = formattedCountries.find(
+      (country) => country.name === value
+    );
+    return filteredResult;
+  };
 
-  return { getAll, getCountryByValue };
+  return { getAll, getCountryByValue, getCountryByExactName };
 };
 
 export default useCountries;

@@ -9,6 +9,7 @@ export async function GET(request: Request) {
     const page = Number(searchParams.get("page"));
     const pageSize = 8;
     const offset = (page - 1) * pageSize;
+
     const places = await prisma.places.findMany({
       take: pageSize,
       skip: offset,
@@ -21,6 +22,7 @@ export async function GET(request: Request) {
         placeId: { in: idPlaces },
       },
     });
+
     const photos = await prisma.photos.findMany({
       where: {
         placeId: { in: idPlaces },

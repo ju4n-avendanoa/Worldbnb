@@ -7,6 +7,8 @@ const updatePlace = async (
   data: FormInputs,
   userId: string
 ) => {
+  const photosUrl = await uploadPhotos(data.photos);
+
   const placeResponse = await fetch(`/api/places/${placeId}`, {
     method: "PATCH",
     body: JSON.stringify(data),
@@ -20,8 +22,6 @@ const updatePlace = async (
     toast.error("There was an error updating the place");
     throw new Error(error.error);
   }
-
-  const photosUrl = await uploadPhotos(data.photos);
 
   const photosResponse = await fetch(`/api/photos/${placeId}`, {
     method: "POST",

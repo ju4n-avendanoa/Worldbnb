@@ -7,7 +7,7 @@ export function addComma(price: number) {
       groups.unshift(numString.slice(-3));
       numString = numString.slice(0, -3);
     }
-    groups.unshift(numString); // Agregar el último grupo
+    groups.unshift(numString);
 
     return groups.join(",");
   } else {

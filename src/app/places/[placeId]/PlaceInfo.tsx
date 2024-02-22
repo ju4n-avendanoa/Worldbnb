@@ -19,6 +19,7 @@ import dynamic from "next/dynamic";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import useCountries from "@/hooks/useCountries";
+import { capitalize } from "@/utils/capitalize";
 
 const Mapa = dynamic(() => import("@/components/Mapa"), { ssr: false });
 
@@ -47,10 +48,10 @@ function PlaceInfo({
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(place?.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
-  const { getCountryByValue } = useCountries();
+  const { getCountryByExactName } = useCountries();
 
   const router = useRouter();
-  const country = getCountryByValue(place.country);
+  const country = getCountryByExactName(capitalize(place.country));
 
   let placePerks: string[] = [];
   if (perks) {
@@ -96,9 +97,6 @@ function PlaceInfo({
     }
     setDateRange(initialDateRange);
     setIsLoading(false);
-
-    const data = await response.json();
-    // return;
   };
 
   useEffect(() => {
@@ -116,7 +114,9 @@ function PlaceInfo({
   return (
     <>
       <div className="px-4 md:px-20 lg:px-40 xl:px-48 py-4">
-        <h2 className="py-3 text-3xl font-semibold">{`${place?.title}, ${place?.country}`}</h2>
+        <h2 className="py-3 text-3xl font-semibold">{`${
+          place?.title
+        }, ${capitalize(place?.country)}`}</h2>
         <section
           className={`${
             photos?.length === 3 ? "grid-cols-3" : "grid-cols-2 lg:grid-cols-4"
@@ -179,7 +179,7 @@ function PlaceInfo({
                 ))}
               </div>
             </div>
-            <Mapa center={country[0].latlng} />
+            <Mapa center={country!.latlng} />
             <Heading
               title="Your Welcome Moment"
               description={`${place?.checkIn.toString()}:00 h`}

@@ -33,18 +33,16 @@ async function Homes({ searchParams }: ParamsProps) {
       className="grid grid-cols-1 gap-6 px-10 md:px-16 py-10 md:grid-cols-2 xl:grid-cols-4"
       style={{ gridAutoRows: "400px" }}
     >
-      <Suspense fallback={<LoadingCard />}>
-        {availablePlaces.map((place) => {
-          const placePhotos = place.photos.find(
-            (photo: any) => place.place.id === photo.placeId
-          );
-          return (
-            <article key={place.place.id}>
-              <ListingCard place={place.place} photos={placePhotos} />
-            </article>
-          );
-        })}
-      </Suspense>
+      {availablePlaces.map((place) => {
+        const placePhotos = place.photos.find(
+          (photo: any) => place.place.id === photo.placeId
+        );
+        return (
+          <article key={place.place.id}>
+            <ListingCard place={place.place} photos={placePhotos} />
+          </article>
+        );
+      })}
     </section>
   );
 }

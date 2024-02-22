@@ -6,6 +6,8 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/png",
   "image/webp",
 ];
+const MAX_FILE_SIZE_MB = 10;
+
 const Perks = z.object({
   wifi: z.boolean(),
   pet: z.boolean(),
@@ -30,8 +32,12 @@ export const PlaceSchema = z.object({
     if (!files || files.length === 0) {
       return true;
     }
-    return ACCEPTED_IMAGE_TYPES.includes(files[0].type);
-  }, "Only .jpg, .jpeg, .png and .webp formats are supported."),
+
+    const acceptedTypes = ACCEPTED_IMAGE_TYPES.includes(files[0].type);
+    const withinSizeLimit = files[0].size / (1024 * 1024) <= MAX_FILE_SIZE_MB;
+
+    return acceptedTypes && withinSizeLimit;
+  }, `Only .jpg, .jpeg, .png, and .webp formats are supported. Maximum file size is ${MAX_FILE_SIZE_MB}MB.`),
   extraInfo: z.string().min(1, { message: "extra Info cannot be empty" }),
   checkIn: z.coerce
     .number()

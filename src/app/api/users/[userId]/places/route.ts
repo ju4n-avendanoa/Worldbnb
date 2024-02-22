@@ -76,13 +76,14 @@ export async function POST(
     });
 
     for (const photoData of photos) {
-      await prisma.photos.create({
+      const newPhoto = await prisma.photos.create({
         data: {
           photoId: photoData.photoId,
           url: photoData.url,
           placeId: newPlace.id,
         },
       });
+      console.log(newPhoto);
     }
 
     await prisma.perks.create({
