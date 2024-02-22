@@ -1,8 +1,5 @@
-import ImageWithFallback from "@/components/ImageWithFallback";
-import ListingCard from "@/components/places/ListingCard";
-import { Perks, Photos, Place } from "@/interfaces/placeinterface";
-import { fallbackImage } from "@/utils/fallbackImage";
 import { getListings } from "@/actions/getListings";
+import ListingCard from "@/components/places/ListingCard";
 import LoadMore from "@/components/LoadMore";
 
 export default async function Home() {
@@ -15,7 +12,7 @@ export default async function Home() {
   return (
     <main className="w-full min-h-screen ">
       <section
-        className="grid grid-cols-1 gap-6 px-10 md:px-16 py-10 md:grid-cols-2 xl:grid-cols-4"
+        className="grid grid-cols-1 gap-6 px-10 md:px-16 pt-10 pb-6 md:grid-cols-2 xl:grid-cols-4"
         style={{ gridAutoRows: "400px" }}
       >
         {places.map((place) => {

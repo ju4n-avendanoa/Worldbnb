@@ -44,7 +44,7 @@ function LoadMore() {
           );
         })}
       </section>
-      <div ref={ref}>
+      <div ref={ref} className="flex justify-center">
         {hasMoreData ? (
           <Spinner />
         ) : (
