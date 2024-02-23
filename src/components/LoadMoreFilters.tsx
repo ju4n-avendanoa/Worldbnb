@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getReservations } from "@/actions/getReservations";
 import { Photos, Place } from "@/interfaces/placeinterface";
-import { getListings } from "@/actions/getListings";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "./Spinner";
 import ListingCard from "./places/ListingCard";
-import { getReservations } from "@/actions/getReservations";
 
 type Props = {
   country: string;
@@ -39,6 +38,16 @@ function LoadMoreFilters({ country, startDate, endDate, guests }: Props) {
       );
     }
   }, [inView, hasMoreData]);
+
+  useEffect(() => {
+    setHasMoreData(true);
+    setPlaces([]);
+    setPhotos([]);
+    setPage(2);
+  }, [country, startDate, endDate, guests]);
+
+  console.log(page);
+
   return (
     <>
       <section

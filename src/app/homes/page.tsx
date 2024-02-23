@@ -1,7 +1,6 @@
-import { getReservations } from "@/actions/getReservations";
-import { Photos, Place } from "@/interfaces/placeinterface";
-import LoadMoreFilters from "@/components/LoadMoreFilters";
-import ListingCard from "@/components/places/ListingCard";
+import { Suspense } from "react";
+import Homes from "./Homes";
+import LoadingMainPage from "@/components/LoadingMainPage";
 
 export type ParamsProps = {
   searchParams: {
@@ -12,52 +11,23 @@ export type ParamsProps = {
   };
 };
 
-async function Homes({ searchParams }: ParamsProps) {
+function HomePage({ searchParams }: ParamsProps) {
   const country = searchParams.country || "";
   const startDate = searchParams.startDate;
   const endDate = searchParams.endDate;
   const guests = Number(searchParams.guests);
-
-  const availablePlaces: { place: Place; photos: Photos[] }[] =
-    await getReservations(
-      {
-        country,
-        startDate,
-        endDate,
-        guests,
-      },
-      1
-    );
-
-  if (availablePlaces.length === 0) {
-    return <div>There is no places to show</div>;
-  }
-
   return (
-    <>
-      <section
-        className="grid grid-cols-1 gap-6 px-10 md:px-16 py-10 md:grid-cols-2 xl:grid-cols-4"
-        style={{ gridAutoRows: "400px" }}
-      >
-        {availablePlaces.map((place) => {
-          const placePhotos = place.photos.find(
-            (photo: any) => place.place.id === photo.placeId
-          );
-          return (
-            <article key={place.place.id}>
-              <ListingCard place={place.place} photos={placePhotos} />
-            </article>
-          );
-        })}
-      </section>
-      <LoadMoreFilters
-        country={country}
-        startDate={startDate}
-        endDate={endDate}
-        guests={guests}
-      />
-    </>
+    <main className="w-full min-h-screen ">
+      <Suspense fallback={<LoadingMainPage />}>
+        <Homes
+          country={country}
+          startDate={startDate}
+          endDate={endDate}
+          guests={guests}
+        />
+      </Suspense>
+    </main>
   );
 }
 
-export default Homes;
+export default HomePage;

@@ -1,5 +1,5 @@
 export interface Reservations {
-  id: String;
+  id: string;
   userId: string;
   listingId: string;
   startDate: Date;

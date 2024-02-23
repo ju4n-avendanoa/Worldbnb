@@ -40,16 +40,14 @@ function UserPlaceBanner({ place, perks, photos }: Props) {
           <div
             className="flex items-center h-8 gap-2 px-2 text-sm bg-red-500 rounded-lg cursor-pointer justify-evenly w-min lg:w-20 hover:bg-red-700"
             onClick={() => {
-              if (photos) {
-                toast.promise(deletePlace(place.id, photos), {
-                  loading: "Loading...",
-                  success: () => {
-                    router.refresh();
-                    return "Place deleted successfuly";
-                  },
-                  error: "Error deleting the place, please try again later",
-                });
-              }
+              toast.promise(deletePlace(place.id, photos), {
+                loading: "Loading...",
+                success: () => {
+                  router.refresh();
+                  return "Place deleted successfuly";
+                },
+                error: "Error deleting the place, please try again later",
+              });
             }}
           >
             <p className="text-white max-lg:hidden">delete</p>

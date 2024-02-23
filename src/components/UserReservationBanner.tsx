@@ -1,14 +1,15 @@
 "use client";
 
-import { Photos } from "@/interfaces/placeinterface";
+import { deleteReservation } from "@/actions/deleteReservation";
 import { fallbackImage } from "@/utils/fallbackImage";
+import { Reservations } from "@/interfaces/reservations";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next-nprogress-bar";
+import { addComma } from "@/utils/addComma";
+import { Places } from "@prisma/client";
+import { Photos } from "@/interfaces/placeinterface";
 import { toast } from "sonner";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { Reservations } from "@/interfaces/reservations";
-import { Places } from "@prisma/client";
-import { addComma } from "@/utils/addComma";
 
 type Props = {
   place: Places;
@@ -24,14 +25,24 @@ function UserReservationBanner({ place, photo, reservation }: Props) {
       year: "numeric",
     });
 
-  console.log(reservation);
-
   return (
     <section className="flex w-full gap-4 flex-col md:flex-row h-full overflow-hidden">
       <section className="absolute -top-4 right-2 md:top-2 md:right-2">
         <div
           className="flex items-center h-8 gap-2 px-2 text-sm bg-red-500 rounded-lg cursor-pointer justify-evenly w-min lg:w-20 hover:bg-red-700"
-          onClick={() => {}}
+          onClick={() => {
+            toast.promise(
+              deleteReservation(reservation.id, reservation.userId),
+              {
+                loading: "Loading...",
+                success: () => {
+                  router.refresh();
+                  return "Reservation deleted successfuly";
+                },
+                error: "Error deleting the reservation, please try again later",
+              }
+            );
+          }}
         >
           <p className="text-white max-lg:hidden">delete</p>
           <TrashIcon color="white" className="w-4 h-auto" />
