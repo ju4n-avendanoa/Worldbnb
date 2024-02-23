@@ -15,7 +15,8 @@ async function UserPlaces({ userId }: { userId: string }) {
   } = await getPlacesByUserId(userId);
 
   return (
-    <section className="flex flex-col items-center w-full gap-6 p-6 text-sm md:text-base">
+    <section className="flex flex-col items-center w-full gap-6 py-6 px-6 md:px-12 lg:px-20 text-sm md:text-base">
+      <h2 className="text-4xl font-bold">My Places</h2>
       <AddPlaceButton />
       {places?.length > 0 ? (
         places.map((place) => {
@@ -26,7 +27,7 @@ async function UserPlaces({ userId }: { userId: string }) {
           return (
             <div
               key={place.id}
-              className="relative flex flex-col w-full gap-5 p-4 my-2 text-sm bg-gray-100 border shadow-lg md:flex-row rounded-xl h-min lg:text-base shadow-gray-700"
+              className="relative flex flex-col w-full gap-5 p-4 my-2 text-sm bg-gray-100 border shadow-lg md:flex-row rounded-xl lg:text-base shadow-gray-700 h-[600px] md:h-[300px] lg:h-[350px]"
             >
               <UserPlaceBanner
                 place={place}

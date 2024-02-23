@@ -40,14 +40,16 @@ function UserPlaceBanner({ place, perks, photos }: Props) {
           <div
             className="flex items-center h-8 gap-2 px-2 text-sm bg-red-500 rounded-lg cursor-pointer justify-evenly w-min lg:w-20 hover:bg-red-700"
             onClick={() => {
-              toast.promise(deletePlace(place.id, photos), {
-                loading: "Loading...",
-                success: () => {
-                  router.refresh();
-                  return "Place deleted successfuly";
-                },
-                error: "Error deleting the place, please try again later",
-              });
+              if (photos) {
+                toast.promise(deletePlace(place.id, photos), {
+                  loading: "Loading...",
+                  success: () => {
+                    router.refresh();
+                    return "Place deleted successfuly";
+                  },
+                  error: "Error deleting the place, please try again later",
+                });
+              }
             }}
           >
             <p className="text-white max-lg:hidden">delete</p>
@@ -55,30 +57,34 @@ function UserPlaceBanner({ place, perks, photos }: Props) {
           </div>
         </div>
       </section>
-      <div className="w-full h-full md:w-1/3 max-md:pt-2">
+      <div className="w-full h-2/5 md:h-full md:w-1/3 max-md:pt-2">
         <ImageWithFallback
-          src={photos[0]?.url}
+          src={photos[0].url}
           fallbackSrc={fallbackImage}
           alt="picture"
           height={1000}
           width={1000}
-          className="object-cover w-full max-h-64 rounded-2xl"
+          className="object-cover w-full h-full rounded-2xl"
         />
       </div>
-      <div className="flex flex-col w-full gap-2 md:w-2/3">
+      <div className="flex flex-col w-full gap-2 h-full md:w-2/3">
         <h4 className="font-bold">Title:</h4>
-        <p>{place.title}</p>
+        <p className="line-clamp-1">{place.title}</p>
         <h4 className="font-bold">Address:</h4>
-        <p>{place.address}</p>
+        <p className="line-clamp-1">{place.address}</p>
         <h4 className="font-bold">Description:</h4>
-        <p className="whitespace-pre-line">{place.description}</p>
+        <p className="whitespace-pre-line line-clamp-3">{place.description}</p>
         <h4 className="font-bold">Perks:</h4>
         <div className="flex flex-wrap w-full gap-2 ">
-          {placePerks.map((perk, index) => (
-            <div key={index}>
-              <PerksBanner perk={perk} />
-            </div>
-          ))}
+          {placePerks.length === 0 ? (
+            <p>No perks added</p>
+          ) : (
+            placePerks.map((perk, index) => (
+              <div key={index}>
+                <PerksBanner perk={perk} />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </>

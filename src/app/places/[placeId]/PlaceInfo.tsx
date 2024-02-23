@@ -9,6 +9,7 @@ import { truePerks } from "@/utils/truePerks";
 import { useRouter } from "next-nprogress-bar";
 import { Session } from "next-auth";
 import { Range } from "react-date-range";
+import { toast } from "sonner";
 import ShowMorePhotosButton from "@/components/ShowMorePhotosButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import PlaceReservation from "@/components/places/PlaceReservation";
@@ -75,27 +76,41 @@ function PlaceInfo({
     if (!currentUser) {
       return router.push("/login");
     }
-    setIsLoading(true);
+    try {
+      toast.promise(
+        async () => {
+          setIsLoading(true);
 
-    const response = await fetch(`/api/reservations/${place.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        totalPrice,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
-        placeId: place.id,
-        userId: currentUser.user.id,
-      }),
-    });
+          const response = await fetch(`/api/reservations/${place.id}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              totalPrice,
+              startDate: dateRange.startDate,
+              endDate: dateRange.endDate,
+              placeId: place.id,
+              userId: currentUser.user.id,
+            }),
+          });
 
-    if (!response.ok) {
-      console.log("error");
+          if (!response.ok) {
+          }
+
+          setDateRange(initialDateRange);
+          setIsLoading(false);
+        },
+        {
+          loading: "Saving...",
+          success: "Reservation was made successfully!",
+          error: "Failed to reserve this place",
+        }
+      );
+      router.push(`/myAccount/${currentUser.user.id}/trips`);
+    } catch (error) {
+      console.log(error);
     }
-    setDateRange(initialDateRange);
-    setIsLoading(false);
   };
 
   useEffect(() => {

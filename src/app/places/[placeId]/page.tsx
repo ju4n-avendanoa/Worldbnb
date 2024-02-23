@@ -1,7 +1,7 @@
 import { getPlaceById } from "@/actions/getPlaceById";
 import PlaceInfo from "./PlaceInfo";
 import getCurrentUser from "@/actions/getCurrentUser";
-import { getReservationsByPlaceid } from "@/actions/getReservationsById";
+import { getReservationsByPlaceid } from "@/actions/getReservationsByPlaceId";
 
 export const revalidate = 0;
 
