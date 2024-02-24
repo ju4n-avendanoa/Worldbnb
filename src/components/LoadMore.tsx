@@ -26,7 +26,7 @@ function LoadMore() {
         }
       });
     }
-  }, [inView, hasMoreData]);
+  }, [inView, hasMoreData, page]);
   return (
     <>
       <section

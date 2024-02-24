@@ -1,7 +1,6 @@
 import { KeyboardEvent, useEffect, useState } from "react";
 import { MagnifyingGlassIcon, UsersIcon } from "@heroicons/react/24/solid";
 import useCountries, { Country } from "@/hooks/useCountries";
-import { fromLongToShortDate } from "@/utils/formatDate";
 import { useSearchParams } from "next/navigation";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next-nprogress-bar";
@@ -76,14 +75,12 @@ function SearchInput() {
     key: "selection",
   };
 
-  fromLongToShortDate(startDate);
-
   return (
-    <div className="relative flex items-center w-1/2 gap-2 pr-2 border border-gray-300 rounded-full shadow-lg max-lg:hidden">
+    <div className="relative flex items-center w-3/5 xl:w-1/2 pr-2 border border-gray-300 rounded-full shadow-lg max-lg:hidden">
       <input
         type="text"
-        className="w-1/2 px-4 py-5 text-base border-r-2 rounded-full outline-none hover:bg-gray-200 placeholder:text-gray-500 text-gray-500"
-        placeholder="search destinations"
+        className="w-2/5 pr-2 rounded-l-full pl-4 py-3 text-sm border-r-2 outline-none hover:bg-gray-200 placeholder:text-gray-500 text-gray-500"
+        placeholder="Where?"
         value={search}
         onChange={(e) => {
           setDetails(true);
@@ -103,8 +100,8 @@ function SearchInput() {
       />
       <input
         className={`${
-          showCalendar ? "border-2 border-gray-400 bg-gray-200 shadow-xl" : ""
-        } w-1/4 px-4 py-5 text-sm border-r-2 rounded-full outline-none cursor-pointer select-none hover:bg-gray-200 text-gray-500`}
+          showCalendar ? "bg-gray-200 shadow-xl" : ""
+        } w-[25%] pr-2 pl-4 py-3 border-r-2 text-sm outline-none cursor-pointer select-none hover:bg-gray-200 text-gray-500`}
         onClick={() => {
           setShowGuests(false);
           setShowCalendar((prev) => !prev);
@@ -118,21 +115,21 @@ function SearchInput() {
                 month: "short",
                 day: "numeric",
               })}`
-            : "Dates"
+            : "When?"
         }
         readOnly
       />
       <input
         className={`${
-          showGuests ? "border-2 border-gray-400 bg-gray-200 shadow-xl" : ""
-        } px-4 py-5 text-sm rounded-full outline-none cursor-pointer select-none w-[15%] hover:bg-gray-200 text-gray-500`}
+          showGuests ? "bg-gray-200 shadow-xl" : ""
+        } pr-2 pl-4 py-3 text-sm outline-none cursor-pointer select-none w-[25%] hover:bg-gray-200 text-gray-500`}
         onClick={() => {
           setShowCalendar(false);
           setShowGuests((prev) => !prev);
         }}
         value={`${
           guests === 0
-            ? "add guets"
+            ? "guests"
             : `${guests} ${guests > 1 ? `guests` : "guest"}`
         }`}
         readOnly
@@ -151,7 +148,7 @@ function SearchInput() {
         <MagnifyingGlassIcon className="w-4" />
       </button>
       <ul
-        className={`absolute left-0 z-20 w-full bg-white shadow-xl top-[70px] rounded-3xl`}
+        className={`absolute left-0 z-20 w-full bg-white shadow-xl top-[50px] rounded-3xl`}
       >
         {details && countriesResults.length > 0
           ? countriesResults.map((country, index) => {
@@ -181,20 +178,20 @@ function SearchInput() {
         ) : null}
       </ul>
       {showCalendar ? (
-        <div className="absolute z-20 bg-transparent left-0 w-full top-[70px]">
+        <div className="absolute z-20 left-0 w-full top-[50px]">
           <div className="flex justify-center w-full">
             <DateRange
               ranges={[selectionRange]}
               minDate={new Date()}
               rangeColors={["#0369A1"]}
               onChange={handleSelect}
-              className="border"
+              className="border-2 border-gray-300"
             />
           </div>
         </div>
       ) : null}
       {showGuests ? (
-        <div className="absolute left-0 z-20 w-full p-6 bg-white border shadow-xl top-[70px] rounded-lg">
+        <div className="absolute left-0 z-20 w-full p-6 bg-white border shadow-xl top-[50px] rounded-lg">
           <div className="flex items-center justify-around">
             <div className="flex items-center gap-4">
               <UsersIcon className="w-7" />

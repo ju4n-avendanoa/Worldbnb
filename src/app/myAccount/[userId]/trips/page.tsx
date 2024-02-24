@@ -1,7 +1,6 @@
 import { getUserReservations } from "@/actions/getUserReservations";
-import LoadingCard from "@/components/LoadingCard";
-import UserReservationBanner from "@/components/UserReservationBanner";
 import { Suspense } from "react";
+import LoadingCard from "@/components/LoadingCard";
 import Trips from "./Trips";
 
 export const revalidate = 0;

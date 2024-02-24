@@ -10,7 +10,7 @@ type QueryProps = {
 export async function getListings(page: number) {
   try {
     const response = await fetch(`${baseUrl}/api/places?page=${page}`, {
-      cache: "no-store",
+      next: { revalidate: 172800 },
     });
     if (!response.ok) {
       const errorResponse = await response.json();

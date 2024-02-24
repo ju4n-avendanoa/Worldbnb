@@ -3,7 +3,11 @@
 import { deleteReservation } from "@/actions/deleteReservation";
 import { fallbackImage } from "@/utils/fallbackImage";
 import { Reservations } from "@/interfaces/reservations";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import {
+  InformationCircleIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import { useRouter } from "next-nprogress-bar";
 import { addComma } from "@/utils/addComma";
 import { Places } from "@prisma/client";
@@ -27,7 +31,14 @@ function UserReservationBanner({ place, photo, reservation }: Props) {
 
   return (
     <section className="flex w-full gap-4 flex-col md:flex-row h-full overflow-hidden">
-      <section className="absolute -top-4 right-2 md:top-2 md:right-2">
+      <section className="absolute flex gap-1 -top-4 right-2 md:top-2 md:right-2">
+        <div
+          className="flex items-center h-8 gap-2 px-2 text-sm rounded-lg cursor-pointer justify-evenly bg-sky-500 w-min lg:w-20 hover:bg-sky-700"
+          onClick={() => router.push(`/places/${place.id}`)}
+        >
+          <p className="text-white max-lg:hidden">info</p>
+          <InformationCircleIcon color="white" className="w-6 h-auto" />
+        </div>
         <div
           className="flex items-center h-8 gap-2 px-2 text-sm bg-red-500 rounded-lg cursor-pointer justify-evenly w-min lg:w-20 hover:bg-red-700"
           onClick={() => {

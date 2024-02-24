@@ -128,7 +128,7 @@ function PlaceInfo({
   return (
     <>
       <div className="px-4 md:px-20 lg:px-40 xl:px-48 py-4">
-        <h2 className="py-3 text-3xl font-semibold">{`${place?.title}, ${place?.country}`}</h2>
+        <h2 className="py-3 text-xl lg:text-3xl font-semibold">{`${place?.title}, ${place?.country}`}</h2>
         <section
           className={`${
             photos?.length === 3 ? "grid-cols-3" : "grid-cols-2 lg:grid-cols-4"

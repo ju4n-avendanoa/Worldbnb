@@ -37,7 +37,7 @@ function LoadMoreFilters({ country, startDate, endDate, guests }: Props) {
         }
       );
     }
-  }, [inView, hasMoreData]);
+  }, [inView, hasMoreData, country, startDate, endDate, page, guests]);
 
   useEffect(() => {
     setHasMoreData(true);
