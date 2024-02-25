@@ -10,8 +10,8 @@ async function TripsPage({ params }: { params: { userId: string } }) {
 
   if (data?.length === 0) {
     return (
-      <div className="flex justify-center pt-20">
-        <h2 className="font-semibold text-4xl">
+      <div className="pt-20">
+        <h2 className="text-center font-semibold text-xl lg:text-4xl">
           You don&apos;t have any reservations yet
         </h2>
       </div>

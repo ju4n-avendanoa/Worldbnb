@@ -76,7 +76,7 @@ function SearchInput() {
   };
 
   return (
-    <div className="relative flex items-center w-3/5 xl:w-1/2 pr-2 border border-gray-300 rounded-full shadow-lg max-lg:hidden">
+    <div className="relative flex items-center w-3/5 xl:w-1/2 border border-gray-300 rounded-full shadow-lg max-lg:hidden">
       <input
         type="text"
         className="w-2/5 pr-2 rounded-l-full pl-4 py-3 text-sm border-r-2 outline-none hover:bg-gray-200 placeholder:text-gray-500 text-gray-500"
@@ -106,47 +106,49 @@ function SearchInput() {
           setShowGuests(false);
           setShowCalendar((prev) => !prev);
         }}
-        value={
-          endDate > startDate
-            ? `${startDate.toLocaleString("en-US", {
-                month: "short",
-                day: "numeric",
-              })}-${endDate.toLocaleString("en-US", {
-                month: "short",
-                day: "numeric",
-              })}`
-            : "When?"
-        }
+        value={`${startDate.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+        })}-${endDate.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+        })}`}
         readOnly
       />
-      <input
-        className={`${
-          showGuests ? "bg-gray-200 shadow-xl" : ""
-        } pr-2 pl-4 py-3 text-sm outline-none cursor-pointer select-none w-[25%] hover:bg-gray-200 text-gray-500`}
-        onClick={() => {
-          setShowCalendar(false);
-          setShowGuests((prev) => !prev);
-        }}
-        value={`${
-          guests === 0
-            ? "guests"
-            : `${guests} ${guests > 1 ? `guests` : "guest"}`
+      <div
+        className={`flex w-[35%] hover:bg-gray-200 rounded-full ${
+          showGuests ? "bg-gray-200" : ""
         }`}
-        readOnly
-      />
-      <button
-        type="submit"
-        className="flex items-center justify-around gap-2 px-3 py-3 text-white transition duration-150 rounded-full w-[10%] bg-sky-700 active:scale-95"
-        onClick={() => {
-          setShowCalendar(false);
-          setShowGuests(false);
-          router.push(
-            `/homes?country=${search.toLowerCase()}&startDate=${startDate}&endDate=${endDate}&guests=${guests}`
-          );
-        }}
       >
-        <MagnifyingGlassIcon className="w-4" />
-      </button>
+        <input
+          className={`${
+            showGuests ? "bg-gray-200" : ""
+          } pr-2 pl-4 py-3 text-sm outline-none cursor-pointer select-none w-[75%] hover:bg-gray-200 text-gray-500`}
+          onClick={() => {
+            setShowCalendar(false);
+            setShowGuests((prev) => !prev);
+          }}
+          value={`${
+            guests === 0
+              ? "guests"
+              : `${guests} ${guests > 1 ? `guests` : "guest"}`
+          }`}
+          readOnly
+        />
+        <button
+          type="submit"
+          className="flex items-center m-1 justify-around gap-2 text-white transition duration-150 rounded-full w-[25%] bg-sky-700 active:scale-95"
+          onClick={() => {
+            setShowCalendar(false);
+            setShowGuests(false);
+            router.push(
+              `/homes?country=${search.toLowerCase()}&startDate=${startDate}&endDate=${endDate}&guests=${guests}`
+            );
+          }}
+        >
+          <MagnifyingGlassIcon className="w-4" />
+        </button>
+      </div>
       <ul
         className={`absolute left-0 z-20 w-full bg-white shadow-xl top-[50px] rounded-3xl`}
       >

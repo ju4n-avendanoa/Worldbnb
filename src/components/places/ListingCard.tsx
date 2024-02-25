@@ -45,8 +45,9 @@ function ListingCard({ place, photos }: Props) {
           className="object-cover w-full rounded-2xl h-2/3"
         />
         <div className="flex flex-col gap-1 py-2 text-sm xl:text-base">
-          <h3 className="font-semibold line-clamp-2">{`${place.title}, ${place.country}`}</h3>
-          <p className="text-neutral-500 line-clamp-2">{place.address}</p>
+          <h3 className="font-semibold line-clamp-1">{place.title}</h3>
+          <h3 className="font-semibold line-clamp-1">{place.country}</h3>
+          <p className="text-neutral-500 line-clamp-1">{place.address}</p>
           <p className="font-semibold ">{`$${formattedPrice} ${place.currency}`}</p>
         </div>
       </div>

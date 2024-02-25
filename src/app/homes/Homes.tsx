@@ -23,7 +23,14 @@ async function Homes({ country, startDate, endDate, guests }: ParamsProps) {
     );
 
   if (availablePlaces.length === 0) {
-    return <div>There is no places to show</div>;
+    return (
+      <div className="flex flex-col items-center pt-20 gap-4">
+        <h2 className="text-2xl font-bold lg:text-4xl">
+          There is no places to show
+        </h2>
+        <p>Try using different filters</p>
+      </div>
+    );
   }
 
   return (
@@ -32,7 +39,7 @@ async function Homes({ country, startDate, endDate, guests }: ParamsProps) {
         className="grid grid-cols-1 gap-6 px-10 md:px-16 py-10 md:grid-cols-2 xl:grid-cols-4"
         style={{ gridAutoRows: "400px" }}
       >
-        {availablePlaces.map((place) => {
+        {availablePlaces?.map((place) => {
           const placePhotos = place.photos.find(
             (photo: any) => place.place.id === photo.placeId
           );

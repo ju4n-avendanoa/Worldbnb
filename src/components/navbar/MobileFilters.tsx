@@ -88,6 +88,8 @@ function MobileFilters({ isVisible, onClose }: Props) {
     <section className="fixed inset-0 bg-white flex justify-center w-full pt-20 animate-in slide-in-from-bottom duration-500">
       <ArrowLeftCircleIcon
         onClick={() => {
+          setShowCalendar(false);
+          setShowGuests(false);
           onClose();
         }}
         className="absolute w-8 top-4 left-4 hover:bg-gray-200 rounded-full active:scale-90 transition duration-150"
