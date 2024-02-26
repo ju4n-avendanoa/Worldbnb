@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Airbnb NextJS
 
-## Getting Started
+Welcome to the official repository of Airbnb NextJS. This project is a web application based on Next.js that recreates the core functionality of Airbnb. You can access the deployed application at [worldbnb.vercel.app](https://worldbnb.vercel.app/).
 
-First, run the development server:
+## Environment Configuration
+
+Before running the application locally, make sure to set up the following environment variables in a `.env.local` file at the root of the project:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_ID=
+GITHUB_SECRET=
+NEXTAUTH_SECRET=
+JWT_SECRET=
+DATABASE_URL=
+CLOUD_NAME=
+API_KEY=
+API_SECRET=
+CLOUDINARY_URL=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ensure to provide the correct values for each environment variable based on the credentials and specific configuration of the services you are using.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Next.js**: React framework for web applications.
+- **NextAuth.js**: Simple authentication handling for Next.js.
+- **MongoDB**: Database used to store application data.
+- **Cloudinary**: Cloud-based media management platform used to store images.
+- **Vercel**: Deployment platform used to deploy the application.
 
-## Learn More
+## Usage Instructions
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone this repository to your local machine.
+2. Install dependencies with `npm install`.
+3. Configure environment variables in a `.env.local` file.
+4. Run the application with `npm run dev`.
+5. Access the application in your browser at `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Enjoy exploring the world of Airbnb in this Next.js-based version! Feel free to contribute and improve this project. Thank you for your interest!
