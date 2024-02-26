@@ -1,4 +1,4 @@
-# Airbnb NextJS
+# Worldbnb
 
 Welcome to the official repository of Airbnb NextJS. This project is a web application based on Next.js that recreates the core functionality of Airbnb. You can access the deployed application at [worldbnb.vercel.app](https://worldbnb.vercel.app/).
 
