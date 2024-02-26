@@ -1,17 +1,14 @@
-import {
-  AdjustmentsHorizontalIcon,
-  ArrowLeftCircleIcon,
-} from "@heroicons/react/24/outline";
-import React from "react";
 import { KeyboardEvent, useEffect, useState } from "react";
 import { MagnifyingGlassIcon, UsersIcon } from "@heroicons/react/24/solid";
-import useCountries, { Country } from "@/hooks/useCountries";
+import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline";
 import { useSearchParams } from "next/navigation";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next-nprogress-bar";
 import { DateRange } from "react-date-range";
+import useCountries, { Country } from "@/hooks/useCountries";
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "react-date-range/dist/styles.css"; // main style file
+
 type Props = {
   isVisible: boolean;
   onClose: () => void;
@@ -85,23 +82,23 @@ function MobileFilters({ isVisible, onClose }: Props) {
   };
   if (!isVisible) return null;
   return (
-    <section className="fixed inset-0 bg-white flex justify-center w-full pt-20 animate-in slide-in-from-bottom duration-500">
+    <section className="fixed inset-0 flex justify-center w-full pt-20 duration-500 bg-white animate-in slide-in-from-bottom">
       <ArrowLeftCircleIcon
         onClick={() => {
           setShowCalendar(false);
           setShowGuests(false);
           onClose();
         }}
-        className="absolute w-8 top-4 left-4 hover:bg-gray-200 rounded-full active:scale-90 transition duration-150"
+        className="absolute w-8 transition duration-150 rounded-full top-4 left-4 hover:bg-gray-200 active:scale-90"
       />
-      <section className="flex p-4 flex-col justify-evenly items-center gap-10 w-5/6 h-1/2 bg-white rounded-md relative">
-        <h2 className="text-sky-700 text-2xl font-bold">
+      <section className="relative flex flex-col items-center w-5/6 gap-10 p-4 bg-white rounded-md justify-evenly h-1/2">
+        <h2 className="text-2xl font-bold text-sky-700">
           Filter your dream places
         </h2>
         <div className="relative w-full">
           <input
             type="text"
-            className="w-full border pl-4 py-3 text-sm outline-none hover:bg-gray-200 placeholder:text-gray-500 text-gray-500"
+            className="w-full py-3 pl-4 text-sm text-gray-500 border outline-none hover:bg-gray-200 placeholder:text-gray-500"
             placeholder="Where?"
             value={search}
             onChange={(e) => {
@@ -174,7 +171,7 @@ function MobileFilters({ isVisible, onClose }: Props) {
             readOnly
           />
           {showCalendar ? (
-            <div className="absolute z-20 left-0 w-full top-14">
+            <div className="absolute left-0 z-20 w-full top-14">
               <div className="flex justify-center w-full">
                 <DateRange
                   ranges={[selectionRange]}
@@ -209,7 +206,7 @@ function MobileFilters({ isVisible, onClose }: Props) {
               <div className="flex items-center justify-around gap-2">
                 <div className="flex items-center gap-4">
                   <UsersIcon className="w-7" />
-                  <h4 className="text-sm px-2 text-center">Add guests</h4>
+                  <h4 className="px-2 text-sm text-center">Add guests</h4>
                 </div>
                 <div className="flex items-center gap-6">
                   <button
@@ -233,7 +230,7 @@ function MobileFilters({ isVisible, onClose }: Props) {
         </div>
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 px-3 py-3 text-white transition duration-150 rounded-lg w-full bg-sky-700 active:scale-95"
+          className="flex items-center justify-center w-full gap-2 px-3 py-3 text-white transition duration-150 rounded-lg bg-sky-700 active:scale-95"
           onClick={() => {
             setShowCalendar(false);
             setShowGuests(false);

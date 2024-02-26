@@ -8,7 +8,7 @@ type Props = {
 function PerksBanner({ perk }: Props) {
   return (
     <div
-      className="flex items-center justify-center border-2 rounded-lg border-sky-700 bg-sky-50 w-8 h-8 lg:w-10 lg:h-10"
+      className="flex items-center justify-center w-8 h-8 border-2 rounded-lg border-sky-700 bg-sky-50 lg:w-10 lg:h-10"
       title={perk}
     >
       <ImageWithFallback

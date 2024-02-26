@@ -1,13 +1,12 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpSchema } from "@/validations/userSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useErrorStore } from "@/store/errorStore";
-import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import ProviderLogs from "../../components/ProviderLogs";
 import Link from "next/link";
-import ProviderLogs from "./ProviderLogs";
 
 type Inputs = {
   name: string;
@@ -25,17 +24,11 @@ function RegisterForm() {
   } = useForm<Inputs>({
     resolver: zodResolver(SignUpSchema),
   });
-  const { error, errorMessage, setError, setErrorMessage } = useErrorStore();
 
   const router = useRouter();
 
-  useEffect(() => {
-    setError(false);
-  }, [setError]);
-
   const onSubmit = async (data: Inputs) => {
     try {
-      setError(false);
       const response = await fetch("/api/register", {
         method: "POST",
         body: JSON.stringify(data),
@@ -44,14 +37,12 @@ function RegisterForm() {
         },
       });
       if (!response.ok) {
-        setError(true);
-        setErrorMessage("There was a problem, please try again later");
+        toast.error("There was a problem, please try again later");
         return;
       }
       router.push("/");
     } catch (error: any) {
-      setError(true);
-      setErrorMessage("There was a problem, please try again later");
+      toast.error("There was a problem, please try again later");
     } finally {
       reset();
     }
@@ -194,11 +185,6 @@ function RegisterForm() {
         </p>
         <ProviderLogs />
       </div>
-      {error && (
-        <div className="p-4 bg-red-500 rounded-2xl">
-          <p className="text-white">{errorMessage}</p>
-        </div>
-      )}
     </div>
   );
 }

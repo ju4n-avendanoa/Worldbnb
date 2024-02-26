@@ -11,7 +11,7 @@ function ShowMorePhotosButton({
   return (
     <button
       onClick={() => setShowCarousel(true)}
-      className="flex items-center gap-2 p-2 transition duration-150 hover:scale-105 border border-black rounded-lg bg-slate-200 active:scale-90"
+      className="flex items-center gap-2 p-2 transition duration-150 border border-black rounded-lg hover:scale-105 bg-slate-200 active:scale-90"
     >
       <Squares2X2Icon className="w-5" />
       <span className="text-sm font-semibold">Show all photos</span>

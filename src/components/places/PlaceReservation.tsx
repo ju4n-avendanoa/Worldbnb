@@ -34,10 +34,7 @@ function PlaceReservation({
       w-min
     "
     >
-      <div
-        className="
-    flex flex-row items-center gap-1 p-4"
-      >
+      <div className="flex flex-row items-center gap-1 p-4 ">
         <div className="text-2xl font-semibold">
           <span>$ {addComma(price)}</span>
           <span> {currency}</span>
@@ -54,19 +51,16 @@ function PlaceReservation({
       />
       <hr />
       <hr />
-      <div className="p-4 flex justify-center">
+      <div className="flex justify-center p-4">
         <button
-          className="text-white bg-sky-700 py-2 px-8 rounded-lg transition active:scale-95 duration-150 hover:scale-105 w-full font-semibold"
+          className="w-full px-8 py-2 font-semibold text-white transition duration-150 rounded-lg bg-sky-700 active:scale-95 hover:scale-105"
           disabled={disabled}
           onClick={onSubmit}
         >
           Reserve
         </button>
       </div>
-      <div
-        className="p-4 flex flex-row items-center justify-between font-semibold text-lg
-      "
-      >
+      <div className="flex flex-row items-center justify-between p-4 text-lg font-semibold ">
         <div>Total</div>
         <div>$ {`${addComma(totalPrice)} ${currency}`}</div>
       </div>

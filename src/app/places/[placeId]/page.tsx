@@ -12,7 +12,7 @@ async function PlacePage({ params }: { params: { placeId: string } }) {
 
   if (!response) {
     return (
-      <div className="flex justify-center text-4xl pt-20 font-semibold">
+      <div className="flex justify-center pt-20 text-4xl font-semibold">
         <h2>This place does not exist</h2>
       </div>
     );

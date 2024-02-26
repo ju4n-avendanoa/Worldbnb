@@ -76,10 +76,10 @@ function SearchInput() {
   };
 
   return (
-    <div className="relative flex items-center w-3/5 xl:w-1/2 border border-gray-300 rounded-full shadow-lg max-lg:hidden">
+    <div className="relative flex items-center w-3/5 border border-gray-300 rounded-full shadow-lg xl:w-1/2 max-lg:hidden">
       <input
         type="text"
-        className="w-2/5 pr-2 rounded-l-full pl-4 py-3 text-sm border-r-2 outline-none hover:bg-gray-200 placeholder:text-gray-500 text-gray-500"
+        className="w-2/5 py-3 pl-4 pr-2 text-sm text-gray-500 border-r-2 rounded-l-full outline-none hover:bg-gray-200 placeholder:text-gray-500"
         placeholder="Where?"
         value={search}
         onChange={(e) => {

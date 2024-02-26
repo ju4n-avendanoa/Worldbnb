@@ -1,5 +1,5 @@
-import LoadingMainPage from "@/components/LoadingMainPage";
 import { Suspense } from "react";
+import LoadingMainPage from "@/components/loading/LoadingMainPage";
 import MainPage from "./MainPage";
 
 export default async function Home() {

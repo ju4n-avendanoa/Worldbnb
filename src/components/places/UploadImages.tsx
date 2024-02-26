@@ -1,15 +1,10 @@
-import {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { deletePhotos } from "@/actions/deletePhotos";
 import { perksLogos } from "@/utils/perksLogos";
 import { FormInputs } from "@/interfaces/formInterface";
 import { Photos } from "@/interfaces/placeinterface";
 import ImageWithFallback from "../ImageWithFallback";
-import { deletePhotos } from "@/actions/deletePhotos";
 
 type Props = {
   errors: FieldErrors<FormInputs>;

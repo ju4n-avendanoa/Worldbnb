@@ -2,7 +2,7 @@ import React from "react";
 
 function Loading() {
   return (
-    <main className="loader-parent min-h-screen w-screen">
+    <main className="w-screen min-h-screen loader-parent">
       <div className="loader-container">
         <div className="loader"></div>
         <p>Loading...</p>

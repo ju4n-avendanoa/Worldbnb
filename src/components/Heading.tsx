@@ -8,10 +8,10 @@ type Props = {
 function Heading({ title, description }: Props) {
   return (
     <section className="flex flex-col gap-2">
-      <h4 className="font-semibold text-base md:text-xl whitespace-pre-line">
+      <h4 className="text-base font-semibold whitespace-pre-line md:text-xl">
         {title}
       </h4>
-      <p className="text sm md:text-base whitespace-pre-line">{description}</p>
+      <p className="whitespace-pre-line text sm md:text-base">{description}</p>
     </section>
   );
 }

@@ -11,18 +11,16 @@ import Autoplay from "embla-carousel-autoplay";
 
 function Banner() {
   return (
-    <div className="px-16 select-none w-2/5 h-2/5 mx-auto">
+    <div className="w-2/5 px-16 mx-auto select-none h-2/5">
       <Carousel
         opts={{
           align: "center",
           loop: true,
-
         }}
         plugins={[
           Autoplay({
             delay: 5000,
           }),
-          
         ]}
       >
         <CarouselContent className="-ml-4">

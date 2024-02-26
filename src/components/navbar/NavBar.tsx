@@ -17,7 +17,7 @@ function NavBar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="sticky top-0 z-20 flex flex-col gap-4 px-8 md:px-16 py-2 bg-white border">
+    <nav className="sticky top-0 z-20 flex flex-col gap-4 px-8 py-2 bg-white border md:px-16">
       <div className="flex items-center justify-between">
         <Logo />
 
@@ -27,7 +27,7 @@ function NavBar() {
 
         <section className="flex gap-2">
           <div
-            className="cursor-pointer px-4 py-2 border border-gray-300 rounded-full lg:hidden"
+            className="px-4 py-2 border border-gray-300 rounded-full cursor-pointer lg:hidden"
             onClick={() => setShowMobileFilters(true)}
           >
             <AdjustmentsHorizontalIcon className="w-6 h-6" />

@@ -107,7 +107,7 @@ function PlaceForm({
             {placeId ? "Edit your place" : "Add a new place"}
           </h2>
           <form
-            className="flex flex-col w-5/6 md:w-2/3 lg:w-1/2 mx-auto gap-4 py-10"
+            className="flex flex-col w-5/6 gap-4 py-10 mx-auto md:w-2/3 lg:w-1/2"
             onSubmit={handleSubmit(onSubmit)}
           >
             <Input

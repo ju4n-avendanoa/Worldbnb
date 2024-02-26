@@ -44,7 +44,7 @@ function PhotoCarousel({ showCarousel, setShowCarousel, photos }: Props) {
           setActiveIndex(0);
           setShowCarousel(false);
         }}
-        className="absolute w-8 top-4 left-4 hover:bg-gray-200 rounded-full active:scale-90 transition duration-150"
+        className="absolute w-8 transition duration-150 rounded-full top-4 left-4 hover:bg-gray-200 active:scale-90"
       />
       <div className="flex flex-col items-center justify-center w-11/12 h-full gap-4 mx-auto lg:w-1/2">
         <h2 className="text-4xl font-semibold text-sky-800">All photos</h2>
@@ -56,7 +56,7 @@ function PhotoCarousel({ showCarousel, setShowCarousel, photos }: Props) {
           className="h-2/3"
         >
           <CarouselContent
-            className="h-full w-full"
+            className="w-full h-full"
             style={{
               transform: `translateX(-${activeIndex * 100}%)`,
               transition: "transform 0.5s ease-in-out",

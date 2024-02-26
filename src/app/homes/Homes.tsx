@@ -24,7 +24,7 @@ async function Homes({ country, startDate, endDate, guests }: ParamsProps) {
 
   if (availablePlaces.length === 0) {
     return (
-      <div className="flex flex-col items-center pt-20 gap-4">
+      <div className="flex flex-col items-center gap-4 pt-20">
         <h2 className="text-2xl font-bold lg:text-4xl">
           There is no places to show
         </h2>
@@ -36,7 +36,7 @@ async function Homes({ country, startDate, endDate, guests }: ParamsProps) {
   return (
     <>
       <section
-        className="grid grid-cols-1 gap-6 px-10 md:px-16 py-10 md:grid-cols-2 xl:grid-cols-4"
+        className="grid grid-cols-1 gap-6 px-10 py-10 md:px-16 md:grid-cols-2 xl:grid-cols-4"
         style={{ gridAutoRows: "400px" }}
       >
         {availablePlaces?.map((place) => {

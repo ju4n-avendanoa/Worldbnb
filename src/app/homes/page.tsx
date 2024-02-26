@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Homes from "./Homes";
-import LoadingMainPage from "@/components/LoadingMainPage";
+import LoadingMainPage from "@/components/loading/LoadingMainPage";
 
 export type ParamsProps = {
   searchParams: {

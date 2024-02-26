@@ -65,7 +65,7 @@ function UserPlaceBanner({ place, perks, photos }: Props) {
           className="object-cover w-full h-full rounded-2xl"
         />
       </div>
-      <div className="flex flex-col w-full gap-2 h-full md:w-2/3">
+      <div className="flex flex-col w-full h-full gap-2 md:w-2/3">
         <h4 className="font-bold">Title:</h4>
         <p className="line-clamp-1">{place.title}</p>
         <h4 className="font-bold">Address:</h4>

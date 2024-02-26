@@ -30,7 +30,7 @@ function UserReservationBanner({ place, photo, reservation }: Props) {
     });
 
   return (
-    <section className="flex w-full gap-4 flex-col md:flex-row h-full overflow-hidden">
+    <section className="flex flex-col w-full h-full gap-4 overflow-hidden md:flex-row">
       <section className="absolute flex gap-1 -top-4 right-2 md:top-2 md:right-2">
         <div
           className="flex items-center h-8 gap-2 px-2 text-sm rounded-lg cursor-pointer justify-evenly bg-sky-500 w-min lg:w-20 hover:bg-sky-700"

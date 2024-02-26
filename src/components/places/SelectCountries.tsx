@@ -37,7 +37,7 @@ function SelectCountries({
   };
 
   return (
-    <div className="pt-4 flex flex-col items-start gap-3">
+    <div className="flex flex-col items-start gap-3 pt-4">
       <label htmlFor="country" className="flex flex-col gap-1">
         <span
           className={`${
@@ -61,7 +61,7 @@ function SelectCountries({
       <select
         id="country"
         placeholder="Anywhere"
-        className="w-full border border-gray-300 outline-none rounded-sm p-4"
+        className="w-full p-4 border border-gray-300 rounded-sm outline-none"
         defaultValue={""}
         {...register("country", {
           onChange: handleCountryChange,
@@ -87,7 +87,7 @@ function SelectCountries({
         id="currency"
         disabled
         defaultValue={""}
-        className="p-4 outline-none border border-gray-400"
+        className="p-4 border border-gray-400 outline-none"
         {...register("currency")}
       />
     </div>

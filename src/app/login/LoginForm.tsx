@@ -1,14 +1,13 @@
 "use client";
 
-import { useErrorStore } from "@/store/errorStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/validations/userSchema";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { useEffect } from "react";
+import { toast } from "sonner";
+import ProviderLogs from "../../components/ProviderLogs";
 import Link from "next/link";
-import ProviderLogs from "./ProviderLogs";
 
 type Inputs = {
   email: string;
@@ -24,24 +23,17 @@ function LoginForm() {
   } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
   });
-  const { error, errorMessage, setError, setErrorMessage } = useErrorStore();
 
   const router = useRouter();
 
-  useEffect(() => {
-    setError(false);
-  }, [setError]);
-
   const onSubmit = async (data: Inputs) => {
     try {
-      setError(false);
       const res = await signIn("credentials", {
         ...data,
         redirect: false,
       });
       if (res?.error) {
-        setError(true);
-        setErrorMessage(res.error);
+        toast.error(res.error);
         return;
       }
       router.push("/");
@@ -129,11 +121,6 @@ function LoginForm() {
         </p>
         <ProviderLogs />
       </div>
-      {error ? (
-        <div className="p-4 bg-red-500 rounded-lg">
-          <p className="text-white">{errorMessage}</p>
-        </div>
-      ) : null}
     </div>
   );
 }

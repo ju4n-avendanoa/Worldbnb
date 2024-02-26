@@ -127,8 +127,8 @@ function PlaceInfo({
 
   return (
     <>
-      <div className="px-4 md:px-20 lg:px-40 xl:px-48 py-4">
-        <h2 className="py-3 text-xl lg:text-3xl font-semibold">{`${place?.title}, ${place?.country}`}</h2>
+      <div className="px-4 py-4 md:px-20 lg:px-40 xl:px-48">
+        <h2 className="py-3 text-xl font-semibold lg:text-3xl">{`${place?.title}, ${place?.country}`}</h2>
         <section
           className={`${
             photos?.length === 3 ? "grid-cols-3" : "grid-cols-2 lg:grid-cols-4"
@@ -168,8 +168,8 @@ function PlaceInfo({
             photos={photos}
           />
         </section>
-        <section className="flex flex-col lg:flex-row gap-10 py-4">
-          <section className="flex flex-col gap-10 w-full lg:w-1/2">
+        <section className="flex flex-col gap-10 py-4 lg:flex-row">
+          <section className="flex flex-col w-full gap-10 lg:w-1/2">
             <Heading
               title="Where Tranquility Resides"
               description={place?.address}
@@ -180,7 +180,7 @@ function PlaceInfo({
             />
             <Heading title="Beyond the Basics" description={place?.extraInfo} />
             <div className="flex flex-col gap-2 pb-2">
-              <h4 className="font-semibold text-base md:text-xl">
+              <h4 className="text-base font-semibold md:text-xl">
                 Modern Comforts Await You
               </h4>
               <div className="flex flex-wrap w-full gap-2 ">
@@ -205,8 +205,8 @@ function PlaceInfo({
               description={`${place?.maxGuests} people`}
             />
           </section>
-          <section className="w-full lg:w-1/2 relative">
-            <div className="sticky top-0 left-0 flex justify-center flex-col gap-10">
+          <section className="relative w-full lg:w-1/2">
+            <div className="sticky top-0 left-0 flex flex-col justify-center gap-10">
               <Heading
                 title="Reservations"
                 description="Select optimal dates for a seamless experience."

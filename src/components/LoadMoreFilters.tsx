@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getReservations } from "@/actions/getReservations";
 import { Photos, Place } from "@/interfaces/placeinterface";
 import { useInView } from "react-intersection-observer";
-import { Spinner } from "./Spinner";
+import { Spinner } from "./loading/Spinner";
 import ListingCard from "./places/ListingCard";
 
 type Props = {
@@ -51,7 +51,7 @@ function LoadMoreFilters({ country, startDate, endDate, guests }: Props) {
   return (
     <>
       <section
-        className="grid grid-cols-1 gap-6 px-10 md:px-16 pb-10 md:grid-cols-2 xl:grid-cols-4"
+        className="grid grid-cols-1 gap-6 px-10 pb-10 md:px-16 md:grid-cols-2 xl:grid-cols-4"
         style={{ gridAutoRows: "400px" }}
       >
         {places.map((place) => {
@@ -69,7 +69,7 @@ function LoadMoreFilters({ country, startDate, endDate, guests }: Props) {
         {hasMoreData ? (
           <Spinner />
         ) : (
-          <p className="text-center text-gray-500 font-semibold text-2xl pb-10">
+          <p className="pb-10 text-2xl font-semibold text-center text-gray-500">
             No more info to show
           </p>
         )}

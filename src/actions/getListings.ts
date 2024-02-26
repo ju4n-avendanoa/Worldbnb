@@ -4,7 +4,6 @@ import { baseUrl } from "../utils/baseUrl";
 type QueryProps = {
   places: Place[];
   photos: Photos[];
-  perks: Perks[];
 };
 
 export async function getListings(page: number) {
@@ -17,10 +16,8 @@ export async function getListings(page: number) {
       throw new Error(errorResponse);
     }
     const data: QueryProps = await response.json();
-
-    const { places, perks, photos } = data;
-    return { places, perks, photos };
+    return data;
   } catch (error: any) {
-    throw new Error(error);
+    console.log(error);
   }
 }
