@@ -1,4 +1,4 @@
-import { Perks, Photos, Place } from "@/interfaces/placeinterface";
+import { Photos, Place } from "@/interfaces/placeinterface";
 import { baseUrl } from "../utils/baseUrl";
 
 type QueryProps = {
@@ -15,7 +15,9 @@ export async function getListings(page: number) {
       const errorResponse = await response.json();
       throw new Error(errorResponse);
     }
+
     const data: QueryProps = await response.json();
+    console.log(data);
     return data;
   } catch (error: any) {
     console.log(error);

@@ -89,7 +89,7 @@ function RegisterForm() {
                 required
                 type="text"
                 id="email"
-                className={` ${
+                className={`${
                   errors.email
                     ? "border border-red-600 outline-red-600 text-red-600"
                     : "focus:outline-sky-600"

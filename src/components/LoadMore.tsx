@@ -18,11 +18,13 @@ function LoadMore() {
     if (inView && hasMoreData) {
       getListings(page).then((res) => {
         if (res) {
-          setPlaces((prev) => [...prev, ...res.places]);
-          setPhotos((prev) => [...prev, ...res.photos]);
-          setPage((prev) => prev + 1);
-        } else {
-          setHasMoreData(false);
+          if (res.places.length > 0) {
+            setPlaces((prev) => [...prev, ...res.places]);
+            setPhotos((prev) => [...prev, ...res.photos]);
+            setPage((prev) => prev + 1);
+          } else {
+            setHasMoreData(false);
+          }
         }
       });
     }
