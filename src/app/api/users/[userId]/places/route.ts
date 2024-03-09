@@ -12,24 +12,10 @@ export async function GET(
       where: {
         userId: params.userId,
       },
+      include: { photos: true, perks: true },
     });
 
-    const idPlaces = places.map((place) => place.id);
-
-    const photos = await prisma.photos.findMany({
-      where: {
-        placeId: { in: idPlaces },
-      },
-    });
-
-    const perks = await prisma.perks.findMany({
-      where: {
-        placeId: {
-          in: idPlaces,
-        },
-      },
-    });
-    return NextResponse.json({ places, perks, photos });
+    return NextResponse.json(places);
   } catch (error) {
     console.error("Error in GET:", error);
     return NextResponse.json(
@@ -76,14 +62,13 @@ export async function POST(
     });
 
     for (const photoData of photos) {
-      const newPhoto = await prisma.photos.create({
+      await prisma.photos.create({
         data: {
           photoId: photoData.photoId,
           url: photoData.url,
           placeId: newPlace.id,
         },
       });
-      console.log(newPhoto);
     }
 
     await prisma.perks.create({

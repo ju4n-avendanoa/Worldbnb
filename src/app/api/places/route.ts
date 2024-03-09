@@ -13,23 +13,10 @@ export async function GET(request: Request) {
     const places = await prisma.places.findMany({
       take: pageSize,
       skip: offset,
+      include: { photos: true },
     });
 
-    const idPlaces = places.map((place) => place.id);
-
-    // const perks = await prisma.perks.findMany({
-    //   where: {
-    //     placeId: { in: idPlaces },
-    //   },
-    // });
-
-    const photos = await prisma.photos.findMany({
-      where: {
-        placeId: { in: idPlaces },
-      },
-    });
-
-    return NextResponse.json({ places, photos });
+    return NextResponse.json(places);
   } catch (error: any) {
     return NextResponse.json(
       { message: "Internal server error" },

@@ -8,14 +8,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next-nprogress-bar";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import PerksList from "./PerksList";
-import UploadImages from "./UploadImages";
-import Loading from "@/app/loading";
-import Input from "./Input";
-import TextAreaInput from "./TextAreaInput";
 import SelectCountries from "./SelectCountries";
+import TextAreaInput from "./TextAreaInput";
+import UploadImages from "./UploadImages";
 import updatePlace from "@/actions/updatePlace";
 import createPlace from "@/actions/createPlace";
+import PerksList from "./PerksList";
+import Loading from "@/app/loading";
+import Input from "./Input";
 
 function PlaceForm({
   placeId,

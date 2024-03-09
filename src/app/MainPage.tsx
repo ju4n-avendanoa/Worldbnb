@@ -3,9 +3,9 @@ import ListingCard from "@/components/places/ListingCard";
 import LoadMore from "@/components/LoadMore";
 
 export default async function MainPage() {
-  const data = await getListings(1);
+  const places = await getListings(1);
 
-  if (!data) {
+  if (!places || places.length === 0) {
     return (
       <div className="flex flex-col items-center gap-4 pt-20">
         <h2 className="text-2xl font-bold lg:text-4xl">
@@ -16,8 +16,6 @@ export default async function MainPage() {
     );
   }
 
-  const { places, photos } = data;
-
   return (
     <main className="w-full min-h-screen ">
       <section
@@ -25,12 +23,9 @@ export default async function MainPage() {
         style={{ gridAutoRows: "400px" }}
       >
         {places.map((place) => {
-          const placePhotos = photos.find(
-            (photo) => place.id === photo.placeId
-          );
           return (
             <article key={place.id}>
-              <ListingCard place={place} photos={placePhotos} />
+              <ListingCard place={place} />
             </article>
           );
         })}

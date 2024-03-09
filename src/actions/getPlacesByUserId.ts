@@ -1,3 +1,4 @@
+import { Perks, Photos, Places } from "@prisma/client";
 import { baseUrl } from "../utils/baseUrl";
 
 export default async function getPlacesByUserId(userId: string) {
@@ -10,7 +11,11 @@ export default async function getPlacesByUserId(userId: string) {
       throw new Error(responseError);
     }
 
-    const placesInformation = await response.json();
+    const placesInformation: (Places & {
+      photos: Photos[];
+      perks: Perks[];
+    })[] = await response.json();
+
     return placesInformation;
   } catch (error: any) {
     console.log(error);

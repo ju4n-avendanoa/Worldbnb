@@ -55,22 +55,10 @@ export async function GET(request: Request) {
       where: query,
       take: pageSize,
       skip: offset,
+      include: { photos: true },
     });
 
-    const idPlaces = places.map((place) => place.id);
-
-    const photos = await prisma.photos.findMany({
-      where: {
-        placeId: { in: idPlaces },
-      },
-    });
-
-    const availablePlaces = places.map((place) => {
-      const placePhotos = photos.filter((photo) => photo.placeId === place.id);
-      return { place, photos: placePhotos };
-    });
-
-    return NextResponse.json(availablePlaces);
+    return NextResponse.json(places);
   } catch (error: any) {
     return NextResponse.json(
       { message: "Internal server error" },

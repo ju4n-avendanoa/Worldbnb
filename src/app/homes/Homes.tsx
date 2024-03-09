@@ -11,22 +11,21 @@ export type ParamsProps = {
 };
 
 async function Homes({ country, startDate, endDate, guests }: ParamsProps) {
-  const availablePlaces: { place: Place; photos: Photos[] }[] =
-    await getReservations(
-      {
-        country,
-        startDate,
-        endDate,
-        guests,
-      },
-      1
-    );
+  const places = await getReservations(
+    {
+      country,
+      startDate,
+      endDate,
+      guests,
+    },
+    1
+  );
 
-  if (availablePlaces.length === 0) {
+  if (!places || places.length === 0) {
     return (
       <div className="flex flex-col items-center gap-4 pt-20">
         <h2 className="text-2xl font-bold lg:text-4xl">
-          There is no places to show
+          There are no places to show
         </h2>
         <p>Try using different filters</p>
       </div>
@@ -39,13 +38,10 @@ async function Homes({ country, startDate, endDate, guests }: ParamsProps) {
         className="grid grid-cols-1 gap-6 px-10 py-10 md:px-16 md:grid-cols-2 xl:grid-cols-4"
         style={{ gridAutoRows: "400px" }}
       >
-        {availablePlaces?.map((place) => {
-          const placePhotos = place.photos.find(
-            (photo: any) => place.place.id === photo.placeId
-          );
+        {places?.map((place) => {
           return (
-            <article key={place.place.id}>
-              <ListingCard place={place.place} photos={placePhotos} />
+            <article key={place.id}>
+              <ListingCard place={place} />
             </article>
           );
         })}

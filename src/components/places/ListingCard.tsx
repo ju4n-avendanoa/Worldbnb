@@ -1,15 +1,16 @@
 "use client";
 
+import { Photos, Places } from "@prisma/client";
 import { fallbackImage } from "@/utils/fallbackImage";
-import { Photos, Place } from "@/interfaces/placeinterface";
 import { useRouter } from "next-nprogress-bar";
 import { addComma } from "@/utils/addComma";
 import { motion } from "framer-motion";
 import ImageWithFallback from "../ImageWithFallback";
 
 type Props = {
-  place: Place;
-  photos: Photos | undefined;
+  place: Places & {
+    photos: Photos[];
+  };
 };
 
 const variants = {
@@ -17,7 +18,7 @@ const variants = {
   visible: { opacity: 1 },
 };
 
-function ListingCard({ place, photos }: Props) {
+function ListingCard({ place }: Props) {
   const router = useRouter();
   const formattedPrice = addComma(place.price);
   return (
@@ -37,7 +38,7 @@ function ListingCard({ place, photos }: Props) {
         className="h-full transition duration-200 cursor-pointer hover:scale-105"
       >
         <ImageWithFallback
-          src={photos?.url!}
+          src={place.photos[0].url}
           alt="photo"
           width={1000}
           height={1000}

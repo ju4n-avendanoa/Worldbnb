@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { getReservations } from "@/actions/getReservations";
-import { Photos, Place } from "@/interfaces/placeinterface";
 import { useInView } from "react-intersection-observer";
 import { Spinner } from "./loading/Spinner";
 import ListingCard from "./places/ListingCard";
+import { Photos, Places } from "@prisma/client";
 
 type Props = {
   country: string;
@@ -15,21 +15,18 @@ type Props = {
 };
 
 function LoadMoreFilters({ country, startDate, endDate, guests }: Props) {
-  const { ref, inView } = useInView();
-  const [places, setPlaces] = useState<Place[]>([]);
-  const [photos, setPhotos] = useState<Photos[]>([]);
   const [hasMoreData, setHasMoreData] = useState(true);
+  const [places, setPlaces] = useState<(Places & { photos: Photos[] })[]>([]);
+  const { ref, inView } = useInView();
   const [page, setPage] = useState(2);
 
   useEffect(() => {
     if (inView && hasMoreData) {
       getReservations({ country, startDate, endDate, guests }, page).then(
-        (res: { place: Place; photos: Photos[] }[]) => {
-          if (res.length > 0) {
-            res.map((item) => {
-              setPlaces((prev) => [...prev, item.place]);
-              setPhotos((prev) => [...prev, ...item.photos]);
-            });
+        (places) => {
+          if (!places) return;
+          if (places.length > 0) {
+            setPlaces((prev) => [...prev, ...places]);
             setPage((prev) => prev + 1);
           } else {
             setHasMoreData(false);
@@ -42,11 +39,8 @@ function LoadMoreFilters({ country, startDate, endDate, guests }: Props) {
   useEffect(() => {
     setHasMoreData(true);
     setPlaces([]);
-    setPhotos([]);
     setPage(2);
   }, [country, startDate, endDate, guests]);
-
-  console.log(page);
 
   return (
     <>
@@ -55,12 +49,9 @@ function LoadMoreFilters({ country, startDate, endDate, guests }: Props) {
         style={{ gridAutoRows: "400px" }}
       >
         {places.map((place) => {
-          const placePhotos = photos.find(
-            (photo) => place.id === photo.placeId
-          );
           return (
             <article key={place.id}>
-              <ListingCard place={place} photos={placePhotos} />
+              <ListingCard place={place} />
             </article>
           );
         })}

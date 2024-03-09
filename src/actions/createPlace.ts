@@ -13,9 +13,7 @@ const createPlace = async (data: FormInputs, userId: string) => {
         "Content-Type": "application/json",
       },
     });
-    console.log("aqui");
-    const datasa = await response.json();
-    console.log(datasa);
+
     if (!response.ok) {
       const error = await response.json();
       toast.error("There was an error creating the place");

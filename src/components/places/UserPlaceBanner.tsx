@@ -1,7 +1,7 @@
 "use client";
 
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { Perks, Photos, Place } from "@/interfaces/placeinterface";
+import { Perks, Photos, Places } from "@prisma/client";
 import { fallbackImage } from "@/utils/fallbackImage";
 import { deletePlace } from "@/actions/deletePlace";
 import { useRouter } from "next-nprogress-bar";
@@ -11,17 +11,18 @@ import ImageWithFallback from "../ImageWithFallback";
 import PerksBanner from "./PerksBanner";
 
 type Props = {
-  place: Place;
-  perks: Perks | undefined;
-  photos: Photos[];
+  place: Places & {
+    photos: Photos[];
+    perks: Perks[];
+  };
 };
 
-function UserPlaceBanner({ place, perks, photos }: Props) {
+function UserPlaceBanner({ place }: Props) {
   const router = useRouter();
 
   let placePerks: string[] = [];
-  if (perks) {
-    placePerks = truePerks(perks);
+  if (place.perks) {
+    placePerks = truePerks(place.perks[0]);
   }
 
   return (
@@ -40,7 +41,7 @@ function UserPlaceBanner({ place, perks, photos }: Props) {
           <div
             className="flex items-center h-8 gap-2 px-2 text-sm bg-red-500 rounded-lg cursor-pointer justify-evenly w-min lg:w-20 hover:bg-red-700"
             onClick={() => {
-              toast.promise(deletePlace(place.id, photos), {
+              toast.promise(deletePlace(place.id, place.photos), {
                 loading: "Loading...",
                 success: () => {
                   router.refresh();
@@ -57,7 +58,7 @@ function UserPlaceBanner({ place, perks, photos }: Props) {
       </section>
       <div className="w-full h-2/5 md:h-full md:w-1/3 max-md:pt-2">
         <ImageWithFallback
-          src={photos[0].url}
+          src={place.photos[0].url}
           fallbackSrc={fallbackImage}
           alt="picture"
           height={1000}

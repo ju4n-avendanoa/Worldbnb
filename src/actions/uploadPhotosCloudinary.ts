@@ -20,7 +20,7 @@ const uploadPhotos = async (photos: File[]) => {
           }
         );
         toast.success(`Photo: ${file.name} added`);
-        console.log(photosResponse);
+
         if (!photosResponse.ok) {
           throw new Error();
         }
@@ -30,8 +30,6 @@ const uploadPhotos = async (photos: File[]) => {
       }
     }
   }
-
-  console.log(urlResponse[0].secure_url);
 
   return urlResponse.map((image: ImageResponse) => ({
     photoId: image.public_id,

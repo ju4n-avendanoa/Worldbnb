@@ -1,10 +1,5 @@
-import { Photos, Place } from "@/interfaces/placeinterface";
 import { baseUrl } from "../utils/baseUrl";
-
-type QueryProps = {
-  places: Place[];
-  photos: Photos[];
-};
+import { Photos, Places } from "@prisma/client";
 
 export async function getListings(page: number) {
   try {
@@ -15,10 +10,13 @@ export async function getListings(page: number) {
       const errorResponse = await response.json();
       throw new Error(errorResponse);
     }
+    const places: (Places & {
+      photos: Photos[];
+    })[] = await response.json();
 
-    const data: QueryProps = await response.json();
-    console.log(data);
-    return data;
+    places.map((place) => console.log(place.title));
+
+    return places;
   } catch (error: any) {
     console.log(error);
   }
