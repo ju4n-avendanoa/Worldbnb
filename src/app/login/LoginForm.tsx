@@ -33,9 +33,9 @@ function LoginForm() {
         redirect: false,
       });
       if (res?.error) {
-        toast.error(res.error);
-        return;
+        return toast.error(res.error);
       }
+      toast.success("Login successfull");
       router.push("/");
     } catch (error: any) {
       console.error({ message: error });

@@ -41,8 +41,10 @@ function RegisterForm() {
         toast.error(errorResponse.error);
         return;
       }
-      router.push("/");
+      toast.success("Sign up successfull");
+      router.push("/login");
     } catch (error: any) {
+      console.log(error);
       toast.error("There was a problem, please try again later");
     } finally {
       reset();
