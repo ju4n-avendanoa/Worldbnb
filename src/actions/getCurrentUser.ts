@@ -1,16 +1,7 @@
-import { getServerSession } from "next-auth/next";
 import { config } from "@/app/api/auth/[...nextauth]/route";
-import {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse,
-} from "next";
+import { getServerSession } from "next-auth/next";
 
-export default function auth(
-  ...args:
-    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
-    | [NextApiRequest, NextApiResponse]
-    | []
-) {
-  return getServerSession(...args, config);
+export default async function getUser() {
+  const session = await getServerSession(config);
+  return session?.user;
 }

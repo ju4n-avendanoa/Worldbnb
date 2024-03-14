@@ -9,33 +9,15 @@ export async function GET(
 ) {
   try {
     const reservations = await prisma.reservation.findMany({
-      where: {
-        userId: params.userId,
-      },
-      orderBy: {
-        startDate: "asc",
+      where: { userId: params.userId },
+      include: {
+        listing: {
+          include: { photos: true },
+        },
       },
     });
 
-    const resultArray = await Promise.all(
-      reservations.map(async (reservation) => {
-        const place = await prisma.places.findUnique({
-          where: { id: reservation.placeId },
-        });
-
-        const photo = await prisma.photos.findFirst({
-          where: { placeId: reservation.placeId },
-        });
-
-        return {
-          reservation,
-          place,
-          photo,
-        };
-      })
-    );
-
-    return NextResponse.json(resultArray);
+    return NextResponse.json(reservations);
   } catch (error: any) {
     return NextResponse.json("Internal Server Error", { status: 500 });
   }

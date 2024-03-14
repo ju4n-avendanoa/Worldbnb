@@ -157,17 +157,13 @@ function MobileFilters({ isVisible, onClose }: Props) {
               setShowGuests(false);
               setShowCalendar((prev) => !prev);
             }}
-            value={
-              endDate > startDate
-                ? `${startDate.toLocaleString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}-${endDate.toLocaleString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}`
-                : "When?"
-            }
+            value={`${startDate.toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}-${endDate.toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}`}
             readOnly
           />
           {showCalendar ? (

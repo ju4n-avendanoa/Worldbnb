@@ -2,11 +2,7 @@ import { FormInputs } from "@/interfaces/formInterface";
 import { toast } from "sonner";
 import uploadPhotos from "./uploadPhotosCloudinary";
 
-const updatePlace = async (
-  placeId: string,
-  data: FormInputs,
-  userId: string
-) => {
+const updatePlace = async (placeId: string, data: FormInputs) => {
   const photosUrl = await uploadPhotos(data.photos);
 
   const placeResponse = await fetch(`/api/places/${placeId}`, {

@@ -1,11 +1,5 @@
-import { Perks, Photos, Place } from "@/interfaces/placeinterface";
 import { baseUrl } from "@/utils/baseUrl";
-
-type QueryProps = {
-  place: Place;
-  photos: Photos[];
-  perks: Perks;
-};
+import { Perks, Photos, Places } from "@prisma/client";
 
 export async function getPlaceById(placeId: string) {
   try {
@@ -18,13 +12,14 @@ export async function getPlaceById(placeId: string) {
       throw new Error(responseError);
     }
 
-    const data: QueryProps = await response.json();
-    const { place, photos, perks } = data;
+    const places:
+      | (Places & {
+          photos: Photos[];
+          perks: Omit<Perks, "id" | "placeId">;
+        })
+      | null = await response.json();
 
-    if (place === undefined) {
-      return null;
-    }
-    return { place, photos, perks };
+    return places;
   } catch (error: any) {
     console.error(error);
   }

@@ -1,25 +1,31 @@
-import { Photos } from "@/interfaces/placeinterface";
-import { Reservations } from "@/interfaces/reservations";
+import { Photos, Places, Reservation } from "@prisma/client";
 import { baseUrl } from "@/utils/baseUrl";
-import { Places } from "@prisma/client";
+import getUser from "./getCurrentUser";
 
-type Props = {
-  reservation: Reservations;
-  place: Places;
-  photo: Photos;
-};
-
-export async function getUserReservations(userId: string) {
+export async function getUserReservations() {
   try {
-    const response = await fetch(`${baseUrl}/api/reservations/user/${userId}`, {
-      cache: "no-store",
-    });
+    const session = await getUser();
+
+    console.log(session?.id);
+
+    const response = await fetch(
+      `${baseUrl}/api/reservations/user/${session?.id}`,
+      {
+        cache: "no-store",
+      }
+    );
     if (!response.ok) {
       const errorResponse = await response.json();
       throw new Error(errorResponse);
     }
-    const data: Props[] = await response.json();
-    return data;
+    const reservations: (Reservation & {
+      listing: Places & {
+        photos: Photos[];
+      };
+    })[] = await response.json();
+    console.log(reservations);
+
+    return reservations;
   } catch (error: any) {
     console.log(error);
   }

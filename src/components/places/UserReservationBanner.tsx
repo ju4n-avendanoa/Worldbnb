@@ -10,15 +10,18 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next-nprogress-bar";
 import { addComma } from "@/utils/addComma";
-import { Places } from "@prisma/client";
-import { Photos } from "@/interfaces/placeinterface";
+import { Photos, Places, Reservation } from "@prisma/client";
 import { toast } from "sonner";
 import ImageWithFallback from "@/components/ImageWithFallback";
 
 type Props = {
   place: Places;
-  photo: Photos;
-  reservation: Reservations;
+  photo: Photos[];
+  reservation: Reservation & {
+    listing: Places & {
+      photos: Photos[];
+    };
+  };
 };
 function UserReservationBanner({ place, photo, reservation }: Props) {
   const router = useRouter();
@@ -61,7 +64,7 @@ function UserReservationBanner({ place, photo, reservation }: Props) {
       </section>
       <div className="w-full h-2/5 md:h-full md:w-1/3 max-md:pt-2">
         <ImageWithFallback
-          src={photo.url}
+          src={photo[0].url}
           fallbackSrc={fallbackImage}
           alt="picture"
           height={1000}

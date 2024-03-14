@@ -1,12 +1,14 @@
 import { FormInputs } from "@/interfaces/formInterface";
-import uploadPhotos from "./uploadPhotosCloudinary";
 import { toast } from "sonner";
+import uploadPhotos from "./uploadPhotosCloudinary";
+import getUser from "./getCurrentUser";
 
 const createPlace = async (data: FormInputs, userId: string) => {
   try {
+    const session = await getUser();
     const photosUrl = await uploadPhotos(data.photos);
 
-    const response = await fetch(`/api/users/${userId}/places`, {
+    const response = await fetch(`/api/users/${session?.id}/places`, {
       method: "POST",
       body: JSON.stringify({ ...data, photos: photosUrl }),
       headers: {

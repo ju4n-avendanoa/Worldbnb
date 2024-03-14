@@ -2,12 +2,10 @@
 
 import { differenceInDays, eachDayOfInterval } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
-import { Perks, Photos, Place } from "@/interfaces/placeinterface";
 import { fallbackImage } from "@/utils/fallbackImage";
 import { Reservations } from "@/interfaces/reservations";
 import { truePerks } from "@/utils/truePerks";
 import { useRouter } from "next-nprogress-bar";
-import { Session } from "next-auth";
 import { Range } from "react-date-range";
 import { toast } from "sonner";
 import ShowMorePhotosButton from "@/components/ShowMorePhotosButton";
@@ -20,15 +18,25 @@ import Heading from "@/components/Heading";
 import dynamic from "next/dynamic";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { Perks, Photos, Places } from "@prisma/client";
 
 const Mapa = dynamic(() => import("@/components/Mapa"), { ssr: false });
 
 type Props = {
-  place: Place;
-  perks: Perks;
-  photos: Photos[];
+  place: Places & {
+    photos: Photos[];
+    perks: Omit<Perks, "id" | "placeId">;
+  };
   reservations?: Reservations[];
-  currentUser: Session | null;
+  currentUser:
+    | ({
+        id: string | undefined;
+      } & {
+        name?: string | null | undefined;
+        email?: string | null | undefined;
+        image?: string | null | undefined;
+      })
+    | undefined;
 };
 
 const initialDateRange = {
@@ -37,13 +45,7 @@ const initialDateRange = {
   key: "selection",
 };
 
-function PlaceInfo({
-  place,
-  perks,
-  photos,
-  reservations = [],
-  currentUser,
-}: Props) {
+function PlaceInfo({ place, reservations = [], currentUser }: Props) {
   const [showCarousel, setShowCarousel] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(place?.price);
@@ -54,9 +56,7 @@ function PlaceInfo({
   const country = getCountryByExactName(place.country);
 
   let placePerks: string[] = [];
-  if (perks) {
-    placePerks = truePerks(perks);
-  }
+  placePerks = truePerks(place.perks);
 
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
@@ -91,7 +91,7 @@ function PlaceInfo({
               startDate: dateRange.startDate,
               endDate: dateRange.endDate,
               placeId: place.id,
-              userId: currentUser.user.id,
+              userId: currentUser.id,
             }),
           });
 
@@ -107,7 +107,7 @@ function PlaceInfo({
           error: "Failed to reserve this place",
         }
       );
-      router.push(`/myAccount/${currentUser.user.id}/trips`);
+      router.push(`/myAccount/${currentUser.id}/trips`);
     } catch (error) {
       console.log(error);
     }
@@ -131,12 +131,14 @@ function PlaceInfo({
         <h2 className="py-3 text-xl font-semibold lg:text-3xl">{`${place?.title}, ${place?.country}`}</h2>
         <section
           className={`${
-            photos?.length === 3 ? "grid-cols-3" : "grid-cols-2 lg:grid-cols-4"
+            place.photos?.length === 3
+              ? "grid-cols-3"
+              : "grid-cols-2 lg:grid-cols-4"
           }
         relative grid  gap-2 py-3`}
           style={{ gridAutoRows: "175px" }}
         >
-          {photos?.map((photo, index) => {
+          {place.photos?.map((photo, index) => {
             if (index > 4) return;
             return (
               <ImageWithFallback
@@ -147,9 +149,9 @@ function PlaceInfo({
                 fallbackSrc={fallbackImage}
                 key={photo.photoId}
                 className={`
-              ${photos?.length <= 2 ? "one-two-children" : ""}
+              ${place.photos?.length <= 2 ? "one-two-children" : ""}
               ${
-                photos?.length === 3 || photos.length >= 5
+                place.photos?.length === 3 || place.photos.length >= 5
                   ? "three-five-children"
                   : ""
               }
@@ -157,7 +159,7 @@ function PlaceInfo({
               />
             );
           })}
-          {photos?.length > 5 && (
+          {place.photos?.length > 5 && (
             <div className="absolute bottom-5 right-2">
               <ShowMorePhotosButton setShowCarousel={setShowCarousel} />
             </div>
@@ -165,7 +167,7 @@ function PlaceInfo({
           <PhotoCarousel
             showCarousel={showCarousel}
             setShowCarousel={setShowCarousel}
-            photos={photos}
+            photos={place.photos}
           />
         </section>
         <section className="flex flex-col gap-10 py-4 lg:flex-row">

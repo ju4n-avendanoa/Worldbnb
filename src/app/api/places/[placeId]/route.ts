@@ -19,25 +19,10 @@ export async function GET(
   try {
     const place = await prisma.places.findFirst({
       where: { id: params.placeId },
+      include: { perks: true, photos: true },
     });
 
-    if (!place) {
-      return NextResponse.json("no found");
-    }
-
-    const perks = await prisma.perks.findFirst({
-      where: {
-        placeId: place.id,
-      },
-    });
-
-    const photos = await prisma.photos.findMany({
-      where: {
-        placeId: place.id,
-      },
-    });
-
-    return NextResponse.json({ place, perks, photos });
+    return NextResponse.json(place);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

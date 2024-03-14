@@ -1,9 +1,12 @@
 import { Perks, Photos, Places } from "@prisma/client";
 import { baseUrl } from "../utils/baseUrl";
+import getUser from "./getCurrentUser";
 
 export default async function getPlacesByUserId(userId: string) {
   try {
-    const response = await fetch(`${baseUrl}/api/users/${userId}/places`, {
+    const session = await getUser();
+
+    const response = await fetch(`${baseUrl}/api/users/${session?.id}/places`, {
       cache: "no-store",
     });
     if (!response.ok) {

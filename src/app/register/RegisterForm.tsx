@@ -37,7 +37,8 @@ function RegisterForm() {
         },
       });
       if (!response.ok) {
-        toast.error("There was a problem, please try again later");
+        const errorResponse = await response.json();
+        toast.error(errorResponse.error);
         return;
       }
       router.push("/");

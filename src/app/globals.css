@@ -98,6 +98,16 @@
   animation: spin 1s linear infinite;
 }
 
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-sky-700;
+  border-radius: 5px;
+}
+
 .one-two-children {
   @apply row-span-2 col-span-2;
 }

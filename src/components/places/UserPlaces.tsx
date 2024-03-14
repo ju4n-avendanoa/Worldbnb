@@ -7,9 +7,12 @@ async function UserPlaces({ userId }: { userId: string }) {
 
   if (!places || places.length === 0) {
     return (
-      <h2 className="py-10 text-xl text-center lg:text-4xl">
-        You don&apos;t have any places yet
-      </h2>
+      <div className="flex-col items-center flex gap-8 pt-20">
+        <h2 className="text-2xl text-center lg:text-4xl font-semibold">
+          You don&apos;t have any places yet
+        </h2>
+        <AddPlaceButton />
+      </div>
     );
   }
 

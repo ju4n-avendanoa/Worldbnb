@@ -4,6 +4,7 @@ import { deletePhotos } from "@/actions/deletePhotos";
 import { perksLogos } from "@/utils/perksLogos";
 import { FormInputs } from "@/interfaces/formInterface";
 import { Photos } from "@/interfaces/placeinterface";
+import { toast } from "sonner";
 import ImageWithFallback from "../ImageWithFallback";
 
 type Props = {
@@ -115,7 +116,13 @@ function UploadImages({
               width={20}
               height={20}
               className="absolute object-cover bg-red-600 rounded-xl bottom-3 right-2 hover:bg-red-400"
-              onClick={() => handleDelete(file.photoId)}
+              onClick={() =>
+                toast.promise(handleDelete(file.photoId), {
+                  loading: "Deleting photo...",
+                  success: "Photo deleted successfully",
+                  error: "Photo could not be deleted",
+                })
+              }
             />
           </div>
         ))}
