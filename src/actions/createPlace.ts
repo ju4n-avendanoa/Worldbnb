@@ -1,3 +1,5 @@
+"use server";
+
 import { FormInputs } from "@/interfaces/formInterface";
 import { toast } from "sonner";
 import uploadPhotos from "./uploadPhotosCloudinary";

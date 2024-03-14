@@ -2,8 +2,8 @@ import AddPlaceButton from "@/components/places/AddPlaceButton";
 import UserPlaceBanner from "@/components/places/UserPlaceBanner";
 import getPlacesByUserId from "@/actions/getPlacesByUserId";
 
-async function UserPlaces({ userId }: { userId: string }) {
-  const places = await getPlacesByUserId(userId);
+async function UserPlaces() {
+  const places = await getPlacesByUserId();
 
   if (!places || places.length === 0) {
     return (

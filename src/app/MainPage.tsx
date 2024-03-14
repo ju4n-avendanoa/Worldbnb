@@ -9,7 +9,7 @@ export default async function MainPage() {
     return (
       <div className="flex flex-col items-center gap-4 pt-20">
         <h2 className="text-2xl font-bold lg:text-4xl">
-          There is no places to show
+          There are no places to show
         </h2>
         <p>Try again later</p>
       </div>

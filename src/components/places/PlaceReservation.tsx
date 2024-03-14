@@ -1,6 +1,5 @@
 import { DateRange, Range } from "react-date-range";
 import { addComma } from "@/utils/addComma";
-import { useRouter } from "next-nprogress-bar";
 
 type Props = {
   price: number;

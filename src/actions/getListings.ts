@@ -14,8 +14,6 @@ export async function getListings(page: number) {
       photos: Photos[];
     })[] = await response.json();
 
-    places.map((place) => console.log(place.title));
-
     return places;
   } catch (error: any) {
     console.log(error);

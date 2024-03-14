@@ -25,7 +25,7 @@ const Mapa = dynamic(() => import("@/components/Mapa"), { ssr: false });
 type Props = {
   place: Places & {
     photos: Photos[];
-    perks: Omit<Perks, "id" | "placeId">;
+    perks: Omit<Perks[], "id" | "placeId">;
   };
   reservations?: Reservations[];
   currentUser:
@@ -56,7 +56,7 @@ function PlaceInfo({ place, reservations = [], currentUser }: Props) {
   const country = getCountryByExactName(place.country);
 
   let placePerks: string[] = [];
-  placePerks = truePerks(place.perks);
+  placePerks = truePerks(place.perks[0]);
 
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];

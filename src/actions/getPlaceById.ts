@@ -12,14 +12,14 @@ export async function getPlaceById(placeId: string) {
       throw new Error(responseError);
     }
 
-    const places:
+    const place:
       | (Places & {
           photos: Photos[];
-          perks: Omit<Perks, "id" | "placeId">;
+          perks: Omit<Perks[], "id" | "placeId">;
         })
       | null = await response.json();
 
-    return places;
+    return place;
   } catch (error: any) {
     console.error(error);
   }

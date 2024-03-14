@@ -1,3 +1,5 @@
+"use server";
+
 import { Photos, Places, Reservation } from "@prisma/client";
 import { baseUrl } from "@/utils/baseUrl";
 import getUser from "./getCurrentUser";
@@ -23,7 +25,6 @@ export async function getUserReservations() {
         photos: Photos[];
       };
     })[] = await response.json();
-    console.log(reservations);
 
     return reservations;
   } catch (error: any) {

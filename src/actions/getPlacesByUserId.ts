@@ -1,8 +1,10 @@
+"use server";
+
 import { Perks, Photos, Places } from "@prisma/client";
 import { baseUrl } from "../utils/baseUrl";
 import getUser from "./getCurrentUser";
 
-export default async function getPlacesByUserId(userId: string) {
+export default async function getPlacesByUserId() {
   try {
     const session = await getUser();
 

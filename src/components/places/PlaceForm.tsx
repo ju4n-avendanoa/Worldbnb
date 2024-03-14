@@ -1,8 +1,9 @@
 "use client";
 
-import { Perks, Photos, Place } from "@/interfaces/placeinterface";
 import { useEffect, useState } from "react";
 import { FormInputs, Perk } from "@/interfaces/formInterface";
+import { Photos, Places } from "@prisma/client";
+import { getPlaceById } from "@/actions/getPlaceById";
 import { PlaceSchema } from "@/validations/placeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next-nprogress-bar";
@@ -47,21 +48,20 @@ function PlaceForm({
     if (!placeId) return;
     setLoading(true);
     const fetchPlaceForm = async () => {
-      const response = await fetch(`/api/places/${placeId}`);
-      const {
-        place,
-        perks,
-        photos,
-      }: { place: Place; perks: Perks; photos: Photos[] } =
-        await response.json();
+      const place = await getPlaceById(placeId);
+      if (!place) {
+        router.push(`/myAccount/${userId}/places`);
 
-      setCloudFilesToShow(photos);
+        return toast.error("Place do not exist");
+      }
 
-      Object.entries(place).forEach(([key, value]) =>
-        setValue(key as keyof FormInputs, value as string | number)
-      );
+      setCloudFilesToShow(place.photos);
 
-      Object.entries(perks).forEach(([key, value]) =>
+      Object.entries(place).forEach(([key, value]) => {
+        setValue(key as keyof FormInputs, value as string | number);
+      });
+
+      Object.entries(place.perks[0]).forEach(([key, value]) =>
         setValue(`perks.${key as keyof Perk}`, value as boolean)
       );
       setLoading(false);
@@ -77,7 +77,7 @@ function PlaceForm({
       toast.promise(
         async () => {
           if (placeId) {
-            await updatePlace(placeId, data, userId);
+            await updatePlace(placeId, data);
             router.push(`/myAccount/${userId}/places`);
             reset();
           } else {

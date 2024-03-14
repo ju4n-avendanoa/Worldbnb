@@ -17,10 +17,14 @@ export async function GET(
   { params }: { params: { placeId: string } }
 ) {
   try {
+    console.log("as");
+
     const place = await prisma.places.findFirst({
       where: { id: params.placeId },
       include: { perks: true, photos: true },
     });
+
+    console.log(place);
 
     return NextResponse.json(place);
   } catch (error: any) {

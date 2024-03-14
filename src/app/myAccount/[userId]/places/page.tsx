@@ -4,11 +4,11 @@ import UserPlaces from "@/components/places/UserPlaces";
 
 export const revalidate = 0;
 
-function UserPlacesPage({ params }: { params: { userId: string } }) {
+function UserPlacesPage() {
   return (
     <>
       <Suspense fallback={<LoadingCard />}>
-        <UserPlaces userId={params.userId} />
+        <UserPlaces />
       </Suspense>
     </>
   );

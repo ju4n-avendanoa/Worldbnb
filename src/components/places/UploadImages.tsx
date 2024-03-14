@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { deletePhotos } from "@/actions/deletePhotos";
 import { perksLogos } from "@/utils/perksLogos";
 import { FormInputs } from "@/interfaces/formInterface";
-import { Photos } from "@/interfaces/placeinterface";
+import { Photos } from "@prisma/client";
 import { toast } from "sonner";
 import ImageWithFallback from "../ImageWithFallback";
 

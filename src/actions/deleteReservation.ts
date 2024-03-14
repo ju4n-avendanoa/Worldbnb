@@ -1,3 +1,5 @@
+"use server";
+
 import { baseUrl } from "@/utils/baseUrl";
 import getUser from "./getCurrentUser";
 
